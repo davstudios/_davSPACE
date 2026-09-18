@@ -7,13 +7,23 @@
 Analizzatore locale dello spazio su disco per Windows, macOS e Linux.  
 Local disk space analyzer for Windows, macOS and Linux.
 
-**v1.0.2 · Local-first · No telemetry**
+**v1.0.3 · Local-first · No telemetry**
 
 Interfaccia allineata al design system di `_davMEDIA` e della suite `_davstudios`.
 
 ## Italiano
 
 `_davSPACE` analizza una cartella o un disco senza modificare i file e senza inviare dati online.
+
+### v1.0.3
+
+Patch del flusso di release GitHub, senza modifiche funzionali all’app.
+
+- Versione sincronizzata a 1.0.3 tra package npm, Tauri e Cargo.
+- Inclusa `.github/workflows/release.yml` nel pacchetto distribuito.
+- Workflow di release allineata al modello stabile di `_davRENAME`.
+- Il tag pubblicato viene usato direttamente per creare la GitHub Release stabile.
+- Nessuna modifica al motore di scansione o all’interfaccia.
 
 ### v1.0.2
 
@@ -59,11 +69,21 @@ npm install
 npm run desktop
 ```
 
-La release corrente è `v1.0.2`, patch della prima versione stabile `v1.0.0`.
+La release corrente è `v1.0.3`, patch della prima versione stabile `v1.0.0`.
 
 ## English
 
 `_davSPACE` analyzes a folder or drive without modifying files or uploading data.
+
+### v1.0.3
+
+GitHub release workflow patch with no functional changes to the app.
+
+- Version synchronized to 1.0.3 across npm package, Tauri and Cargo.
+- `.github/workflows/release.yml` is now included in the distributed package.
+- Release workflow aligned with the stable `_davRENAME` model.
+- The pushed tag is used directly to create the stable GitHub Release.
+- No changes to the scan engine or user interface.
 
 ### v1.0.2
 
@@ -109,7 +129,7 @@ npm install
 npm run desktop
 ```
 
-The current release is `v1.0.2`, a patch to the first stable `v1.0.0` release.
+The current release is `v1.0.3`, a patch to the first stable `v1.0.0` release.
 
 ## Support _davstudios
 

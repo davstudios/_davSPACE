@@ -1,14 +1,15 @@
-_davSPACE v1.0.2
+_davSPACE v1.0.3
 
 Verifica eseguita il 18/09/2026.
 
-TEST AUTOMATICI: 14/14 PASSATI
+TEST AUTOMATICI: 15/15 PASSATI
 
 Controlli coperti:
 - launcher Windows conforme al flusso verificato della suite
 - configurazione Vite/Tauri e TAURI_DEV_HOST
 - dipendenze frontend/Tauri della base verificata
 - metadata di release e file richiesti coerenti
+- workflow GitHub Actions stabile presente e conforme al flusso della suite
 - scanner read-only e link simbolici non seguiti
 - sorgenti senza commenti
 - classificazione categorie file
@@ -16,14 +17,15 @@ Controlli coperti:
 - percentuali entro i limiti
 - filtri per ricerca/categoria/dimensione
 - paginazione senza limiti artificiali
-- sincronizzazione versione 1.0.2 tra package, Tauri e Cargo
+- sincronizzazione versione 1.0.3 tra package, Tauri e Cargo
 - versione UI letta automaticamente da Tauri
 - configurazione Vite/Oxc
 
-CORREZIONI v1.0.2:
-- versione tecnica sincronizzata a 1.0.2
+CORREZIONI v1.0.3:
+- versione tecnica sincronizzata a 1.0.3
 - launcher Windows aggiornato alla nuova patch
-- test di contratto aggiornati alla release stabile 1.0.2
-- metadata tecnici e documentazione sincronizzati a 1.0.2
+- test di contratto aggiornati alla release stabile 1.0.3
+- metadata tecnici e documentazione sincronizzati a 1.0.3
+- workflow GitHub Actions stabile inclusa nel pacchetto e allineata a _davRENAME
 
 Nessuna modifica al motore di scansione o al comportamento utente dell'app.

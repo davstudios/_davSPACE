@@ -8,6 +8,7 @@ const cargo=fs.readFileSync('src-tauri/Cargo.toml','utf8');
 const launcher=fs.readFileSync('RUN-WINDOWS.bat','utf8');
 const vite=fs.readFileSync('vite.config.js','utf8');
 const scanner=fs.readFileSync('src-tauri/src/space.rs','utf8');
+const releaseWorkflow=fs.readFileSync('.github/workflows/release.yml','utf8');
 
 test('Windows launcher preserves the proven _davRENAME flow',()=>{
   assert.match(launcher,/npm install --no-audit --no-fund/i);
@@ -29,10 +30,19 @@ test('frontend and Tauri dependency versions match the proven base',()=>{
 
 test('release metadata and required files are coherent',()=>{
   const rustVersion=cargo.match(/^version\s*=\s*"([^"]+)"/m)?.[1];
-  assert.equal(packageJson.version,'1.0.2');
+  assert.equal(packageJson.version,'1.0.3');
   assert.equal(tauri.version,packageJson.version);
   assert.equal(rustVersion,packageJson.version);
   for(const path of ['README.md','CHANGELOG.md','src-tauri/icons/icon.ico'])assert.equal(fs.existsSync(path),true);
+});
+
+
+test('GitHub release workflow matches the stable suite flow',()=>{
+  assert.match(releaseWorkflow,/push:\s*\n\s*tags:/);
+  assert.match(releaseWorkflow,/github\.ref_name/);
+  assert.match(releaseWorkflow,/Verify release versions/);
+  assert.match(releaseWorkflow,/prerelease:\s*false/);
+  assert.match(releaseWorkflow,/releaseName:\s*'_davSPACE v__VERSION__'/);
 });
 
 test('scanner contract is read-only and does not follow symlinks',()=>{

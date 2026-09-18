@@ -1,5 +1,15 @@
 # Changelog
 
+## 1.0.3
+
+Patch del flusso di release GitHub, senza modifiche funzionali all'app.
+
+- Versione sincronizzata a 1.0.3 tra package npm, Tauri e Cargo.
+- Inclusa nel pacchetto la cartella `.github` con la workflow di release stabile.
+- Workflow allineata a `_davRENAME`: checkout del tag effettivo e verifica preventiva delle versioni.
+- La release usa il tag che ha attivato la workflow e viene pubblicata come stabile (`prerelease: false`).
+- Nessuna modifica al motore di scansione, all'interfaccia o all'icona dell'app.
+
 ## 1.0.2
 
 Patch di release senza modifiche funzionali.
