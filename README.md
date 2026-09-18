@@ -7,13 +7,21 @@
 Analizzatore locale dello spazio su disco per Windows, macOS e Linux.  
 Local disk space analyzer for Windows, macOS and Linux.
 
-**v1.0.1 · Local-first · No telemetry**
+**v1.0.2 · Local-first · No telemetry**
 
 Interfaccia allineata al design system di `_davMEDIA` e della suite `_davstudios`.
 
 ## Italiano
 
 `_davSPACE` analizza una cartella o un disco senza modificare i file e senza inviare dati online.
+
+### v1.0.2
+
+Patch di release senza modifiche funzionali, preparata per un nuovo ciclo pulito di commit/tag/release.
+
+- Versione sincronizzata a 1.0.2 tra package npm, Tauri e Cargo.
+- Aggiornati metadata, test e launcher alla nuova patch.
+- Nessuna modifica al motore di scansione o all’interfaccia.
 
 ### v1.0.1
 
@@ -51,11 +59,19 @@ npm install
 npm run desktop
 ```
 
-La release corrente è `v1.0.1`, patch della prima versione stabile `v1.0.0`.
+La release corrente è `v1.0.2`, patch della prima versione stabile `v1.0.0`.
 
 ## English
 
 `_davSPACE` analyzes a folder or drive without modifying files or uploading data.
+
+### v1.0.2
+
+Release-only patch with no functional changes, prepared for a clean new commit/tag/release cycle.
+
+- Version synchronized to 1.0.2 across npm package, Tauri and Cargo.
+- Metadata, tests and launcher updated to the new patch version.
+- No changes to the scan engine or user interface.
 
 ### v1.0.1
 
@@ -93,7 +109,7 @@ npm install
 npm run desktop
 ```
 
-The current release is `v1.0.1`, a patch to the first stable `v1.0.0` release.
+The current release is `v1.0.2`, a patch to the first stable `v1.0.0` release.
 
 ## Support _davstudios
 

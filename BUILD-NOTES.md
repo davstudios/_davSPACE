@@ -1,6 +1,6 @@
 # Build notes
 
-La v1.0.1 è una patch di affidabilità della release stabile di `_davSPACE`.
+La v1.0.2 è una patch di release della versione stabile di `_davSPACE`, senza modifiche funzionali.
 
 Windows richiede Node.js, npm, Rust e WebView2. macOS richiede Xcode Command Line Tools. Linux richiede le dipendenze Tauri indicate in `INSTALL-LINUX-DEPS-UBUNTU.sh`.
 

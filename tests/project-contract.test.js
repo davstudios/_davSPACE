@@ -29,7 +29,7 @@ test('frontend and Tauri dependency versions match the proven base',()=>{
 
 test('release metadata and required files are coherent',()=>{
   const rustVersion=cargo.match(/^version\s*=\s*"([^"]+)"/m)?.[1];
-  assert.equal(packageJson.version,'1.0.1');
+  assert.equal(packageJson.version,'1.0.2');
   assert.equal(tauri.version,packageJson.version);
   assert.equal(rustVersion,packageJson.version);
   for(const path of ['README.md','CHANGELOG.md','src-tauri/icons/icon.ico'])assert.equal(fs.existsSync(path),true);

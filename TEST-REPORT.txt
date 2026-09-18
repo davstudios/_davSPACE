@@ -1,4 +1,4 @@
-_davSPACE v1.0.1
+_davSPACE v1.0.2
 
 Verifica eseguita il 18/09/2026.
 
@@ -16,14 +16,14 @@ Controlli coperti:
 - percentuali entro i limiti
 - filtri per ricerca/categoria/dimensione
 - paginazione senza limiti artificiali
-- sincronizzazione versione 1.0.1 tra package, Tauri e Cargo
+- sincronizzazione versione 1.0.2 tra package, Tauri e Cargo
 - versione UI letta automaticamente da Tauri
 - configurazione Vite/Oxc
 
-CORREZIONI v1.0.1:
-- RUN-WINDOWS.bat usa npm install --no-audit --no-fund
-- dichiarazione TAURI_DEV_HOST riallineata al contratto CI
-- test project-contract aggiornato dalla preview alla release stabile 1.0.1
-- metadata tecnici e documentazione sincronizzati a 1.0.1
+CORREZIONI v1.0.2:
+- versione tecnica sincronizzata a 1.0.2
+- launcher Windows aggiornato alla nuova patch
+- test di contratto aggiornati alla release stabile 1.0.2
+- metadata tecnici e documentazione sincronizzati a 1.0.2
 
 Nessuna modifica al motore di scansione o al comportamento utente dell'app.

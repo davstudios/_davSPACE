@@ -1,5 +1,14 @@
 # Changelog
 
+## 1.0.2
+
+Patch di release senza modifiche funzionali.
+
+- Versione sincronizzata a 1.0.2 tra package npm, Tauri e Cargo.
+- Aggiornati test, launcher e metadata alla nuova patch.
+- Preparato un nuovo ciclo pulito di commit, tag e release GitHub.
+- Nessuna modifica al motore di scansione o al comportamento utente dell'app.
+
 ## 1.0.1
 
 Patch di affidabilità multipiattaforma.
