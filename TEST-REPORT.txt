@@ -1,0 +1,29 @@
+_davSPACE v1.0.0
+
+Verifica eseguita il 18/09/2026.
+
+TEST AUTOMATICI: 9/9 PASSATI
+
+Controlli coperti:
+- sorgenti senza commenti
+- classificazione categorie file
+- formattazione dimensioni
+- percentuali entro i limiti
+- filtri per ricerca/categoria/dimensione
+- paginazione senza limiti artificiali
+- sincronizzazione versione 1.0.0 tra package, Tauri e Cargo
+- versione UI letta automaticamente da Tauri
+- configurazione Vite/Oxc
+
+CORREZIONI v1.0.0:
+- icona Impostazioni sostituita con SVG gear centrato e simmetrico
+- icone sidebar fissate a 18x18 px senza compressione flex
+- icona Windows principale sostituita con il file icon.ico fornito dall'autore
+- etichette Preview aggiornate a Release stabile
+
+VERIFICHE AGGIUNTIVE:
+- sintassi JavaScript verificata con node --check
+- hash SHA-256 dell'icon.ico nel progetto identico al file fornito
+
+Nota ambiente:
+- il test Rust/Tauri nativo completo richiede Cargo/Rust, non presente nell'ambiente di verifica.

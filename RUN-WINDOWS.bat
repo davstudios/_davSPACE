@@ -1,0 +1,42 @@
+@echo off
+setlocal
+cd /d "%~dp0"
+title _davSPACE v1.0.0
+
+echo ========================================
+echo          _davSPACE v1.0.0
+echo ========================================
+echo.
+where node >nul 2>nul || goto node_error
+where npm >nul 2>nul || goto npm_error
+where cargo >nul 2>nul || goto cargo_error
+if not exist "node_modules\@tauri-apps\cli\tauri.js" (
+  echo Installazione dipendenze npm...
+  call npm install --include=dev
+  if errorlevel 1 goto install_error
+)
+echo Avvio _davSPACE...
+call npm run desktop
+if errorlevel 1 goto app_error
+exit /b 0
+
+:node_error
+echo ERRORE: Node.js non trovato.
+goto fail
+:npm_error
+echo ERRORE: npm non trovato.
+goto fail
+:cargo_error
+echo ERRORE: Rust/Cargo non trovato.
+goto fail
+:install_error
+echo ERRORE: installazione npm non completata.
+goto fail
+:app_error
+echo ERRORE: _davSPACE non e riuscito ad avviarsi.
+goto fail
+:fail
+echo.
+echo Copia qui in chat il messaggio mostrato sopra.
+pause
+exit /b 1
