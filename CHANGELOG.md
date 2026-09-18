@@ -1,5 +1,15 @@
 # Changelog
 
+## 1.0.1
+
+Patch di affidabilità multipiattaforma.
+
+- Corretto `RUN-WINDOWS.bat` per usare `npm install --no-audit --no-fund`, come richiesto dal contratto di progetto.
+- Riallineata la dichiarazione `TAURI_DEV_HOST` in `vite.config.js` al formato verificato dai test CI.
+- Aggiornati i test e i metadata di release dalla vecchia preview alla release stabile corrente.
+- Versione sincronizzata a 1.0.1 tra package npm, Tauri e Cargo.
+- Nessuna modifica al motore di scansione o al comportamento utente dell'app.
+
 ## 1.0.0
 
 Prima release stabile di `_davSPACE`.

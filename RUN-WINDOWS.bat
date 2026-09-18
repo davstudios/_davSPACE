@@ -1,10 +1,10 @@
 @echo off
 setlocal
 cd /d "%~dp0"
-title _davSPACE v1.0.0
+title _davSPACE v1.0.1
 
 echo ========================================
-echo          _davSPACE v1.0.0
+echo          _davSPACE v1.0.1
 echo ========================================
 echo.
 where node >nul 2>nul || goto node_error
@@ -12,7 +12,7 @@ where npm >nul 2>nul || goto npm_error
 where cargo >nul 2>nul || goto cargo_error
 if not exist "node_modules\@tauri-apps\cli\tauri.js" (
   echo Installazione dipendenze npm...
-  call npm install --include=dev
+  call npm install --no-audit --no-fund
   if errorlevel 1 goto install_error
 )
 echo Avvio _davSPACE...

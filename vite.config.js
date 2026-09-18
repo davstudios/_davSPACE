@@ -1,6 +1,6 @@
 import { defineConfig } from 'vite';
 
-const host=process.env.TAURI_DEV_HOST;
+const host = process.env.TAURI_DEV_HOST;
 
 export default defineConfig({
   clearScreen:false,

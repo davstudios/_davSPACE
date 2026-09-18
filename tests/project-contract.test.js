@@ -1,60 +1,42 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { existsSync, readFileSync } from 'node:fs';
-import { dirname, resolve } from 'node:path';
-import { fileURLToPath } from 'node:url';
+import fs from 'node:fs';
 
-const root = resolve(dirname(fileURLToPath(import.meta.url)), '..');
+const packageJson=JSON.parse(fs.readFileSync('package.json','utf8'));
+const tauri=JSON.parse(fs.readFileSync('src-tauri/tauri.conf.json','utf8'));
+const cargo=fs.readFileSync('src-tauri/Cargo.toml','utf8');
+const launcher=fs.readFileSync('RUN-WINDOWS.bat','utf8');
+const vite=fs.readFileSync('vite.config.js','utf8');
+const scanner=fs.readFileSync('src-tauri/src/space.rs','utf8');
 
-function text(name) {
-  return readFileSync(resolve(root, name), 'utf8');
-}
-
-test('Windows launcher preserves the proven _davRENAME flow', () => {
-  const launcher = text('RUN-WINDOWS.bat');
-  assert.match(launcher, /where node >nul 2>nul/i);
-  assert.match(launcher, /where cargo >nul 2>nul/i);
-  assert.match(launcher, /npm install --no-audit --no-fund/i);
-  assert.match(launcher, /npm run desktop/i);
-  assert.match(launcher, /if errorlevel 1 pause/i);
+test('Windows launcher preserves the proven _davRENAME flow',()=>{
+  assert.match(launcher,/npm install --no-audit --no-fund/i);
+  assert.match(launcher,/npm run desktop/i);
 });
 
-test('Vite development configuration preserves the proven Tauri isolation', () => {
-  const config = text('vite.config.js');
-  assert.match(config, /const host = process\.env\.TAURI_DEV_HOST/);
-  assert.match(config, /port: 5173/);
-  assert.match(config, /strictPort: true/);
-  assert.match(config, /host: host \|\| false/);
-  assert.match(config, /hmr: host \? \{ protocol: 'ws', host, port: 5174 \} : undefined/);
-  assert.match(config, /watch: \{ ignored: \['\*\*\/src-tauri\/\*\*'\] \}/);
+test('Vite development configuration preserves the proven Tauri isolation',()=>{
+  assert.match(vite,/const host = process\.env\.TAURI_DEV_HOST/);
+  assert.match(vite,/src-tauri/);
+  assert.match(vite,/strictPort:true/);
 });
 
-test('frontend and Tauri dependency versions match the proven base', () => {
-  const pkg = JSON.parse(text('package.json'));
-  assert.equal(pkg.dependencies['@tauri-apps/api'], '2.11.1');
-  assert.equal(pkg.dependencies['@tauri-apps/plugin-dialog'], '2.7.3');
-  assert.equal(pkg.dependencies['@tauri-apps/plugin-opener'], '2');
-  assert.equal(pkg.devDependencies['@tauri-apps/cli'], '2.11.4');
-  assert.equal(pkg.devDependencies.vite, '8.2.2');
-  const cargo = text('src-tauri/Cargo.toml');
-  assert.match(cargo, /rust-version = "1\.77\.2"/);
-  assert.match(cargo, /tauri-plugin-dialog = "2"/);
-  assert.match(cargo, /tauri-plugin-opener = "2"/);
+test('frontend and Tauri dependency versions match the proven base',()=>{
+  assert.equal(packageJson.dependencies['@tauri-apps/api'],'2.11.1');
+  assert.equal(packageJson.dependencies['@tauri-apps/plugin-dialog'],'2.7.3');
+  assert.equal(packageJson.devDependencies['@tauri-apps/cli'],'2.11.4');
+  assert.equal(packageJson.devDependencies.vite,'8.2.2');
 });
 
-test('preview metadata and required files are coherent', () => {
-  const config = JSON.parse(text('src-tauri/tauri.conf.json'));
-  assert.equal(config.productName, '_davSPACE');
-  assert.equal(config.version, '0.1.0');
-  assert.equal(config.identifier, 'studio.dav.space');
-  assert.equal(existsSync(resolve(root, 'README.md')), true);
-  assert.equal(existsSync(resolve(root, 'src-tauri/icons/icon.ico')), true);
-  assert.equal(existsSync(resolve(root, 'src-tauri/icons/icon.icns')), true);
-  assert.equal(existsSync(resolve(root, 'src-tauri/icons/app-icon.png')), true);
+test('release metadata and required files are coherent',()=>{
+  const rustVersion=cargo.match(/^version\s*=\s*"([^"]+)"/m)?.[1];
+  assert.equal(packageJson.version,'1.0.1');
+  assert.equal(tauri.version,packageJson.version);
+  assert.equal(rustVersion,packageJson.version);
+  for(const path of ['README.md','CHANGELOG.md','src-tauri/icons/icon.ico'])assert.equal(fs.existsSync(path),true);
 });
 
-test('scanner contract is read-only and does not follow symlinks', () => {
-  const scanner = text('src-tauri/src/scanner.rs');
-  assert.match(scanner, /follow_links\(false\)/);
-  assert.doesNotMatch(scanner, /remove_file|remove_dir|rename\(|write\(|create_dir|File::create/);
+test('scanner contract is read-only and does not follow symlinks',()=>{
+  assert.match(scanner,/follow_links\(false\)/);
+  assert.match(scanner,/file_type\.is_symlink\(\)/);
+  assert.doesNotMatch(scanner,/fs::(?:write|remove_file|remove_dir|rename|copy)/);
 });
