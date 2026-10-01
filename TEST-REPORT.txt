@@ -1,31 +1,59 @@
-_davSPACE v1.0.3
+_davSPACE v26.10.1 — Test report
+Date: 2026-10-01
 
-Verifica eseguita il 18/09/2026.
+Automated tests: 28/28 passed
+- Core utility tests: passed
+- Disk-space engine tests: passed
+- Space utility tests: passed
+- Source comment audit: passed
+- Package metadata contract: passed
+- GitHub Release bilingual-description contract: passed
+- Linux release hardening contract: passed
+- Historical identifier contract: passed
+- Tauri icon-set contract: passed
+- Version synchronization across package/lock/Tauri/Cargo/Cargo.lock: passed
 
-TEST AUTOMATICI: 15/15 PASSATI
+Static validation:
+- src/main.js: syntax valid
+- src/helpers.js: syntax valid
+- src/space-engine.js: syntax valid
+- src/space-utils.js: syntax valid
+- vite.config.js: syntax valid
+- package.json: valid JSON
+- package-lock.json: valid JSON
+- src-tauri/tauri.conf.json: valid JSON
+- src-tauri/capabilities/default.json: valid JSON
+- .github/workflows/release.yml: valid YAML
 
-Controlli coperti:
-- launcher Windows conforme al flusso verificato della suite
-- configurazione Vite/Tauri e TAURI_DEV_HOST
-- dipendenze frontend/Tauri della base verificata
-- metadata di release e file richiesti coerenti
-- workflow GitHub Actions stabile presente e conforme al flusso della suite
-- scanner read-only e link simbolici non seguiti
-- sorgenti senza commenti
-- classificazione categorie file
-- formattazione dimensioni
-- percentuali entro i limiti
-- filtri per ricerca/categoria/dimensione
-- paginazione senza limiti artificiali
-- sincronizzazione versione 1.0.3 tra package, Tauri e Cargo
-- versione UI letta automaticamente da Tauri
-- configurazione Vite/Oxc
+Bundle metadata:
+- Version: 26.10.1
+- Public tag: v26.10.1
+- Publisher: _davstudios
+- Homepage: https://davstudios.it
+- License: MIT
+- Copyright: © 2026 _davstudios
+- Identifier preserved: studio.dav.space
+- Category: Productivity
+- Linux DEB section: utils
+- Linux DEB priority: optional
 
-CORREZIONI v1.0.3:
-- versione tecnica sincronizzata a 1.0.3
-- launcher Windows aggiornato alla nuova patch
-- test di contratto aggiornati alla release stabile 1.0.3
-- metadata tecnici e documentazione sincronizzati a 1.0.3
-- workflow GitHub Actions stabile inclusa nel pacchetto e allineata a _davRENAME
+Release workflow:
+- Windows x64 NSIS
+- macOS Universal DMG
+- Linux x64 AppImage and DEB
+- GitHub Release body is read from the tagged commit Description
+- Both 🇮🇹 and 🇺🇸 sections are required
+- Linux apt workflow hardened against unavailable Microsoft repositories
 
-Nessuna modifica al motore di scansione o al comportamento utente dell'app.
+Functional comparison:
+- Frontend source files, Rust backend/scanner files, Vite configuration and index.html were checksum-compared against the supplied source package.
+- No functional differences were introduced by this metadata/release-standard update.
+
+Code signing:
+- No trusted commercial Windows code-signing certificate configured.
+- No Apple Developer ID/notarization configured.
+- README contains SmartScreen, Gatekeeper and AppImage guidance.
+
+Native build:
+- Cargo is not available in this execution environment, so the native Tauri/Rust bundle was not compiled here.
+- GitHub Actions remains responsible for native Windows, macOS and Linux release builds.

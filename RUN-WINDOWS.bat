@@ -1,10 +1,10 @@
 @echo off
 setlocal
 cd /d "%~dp0"
-title _davSPACE v1.0.3
+title _davSPACE v26.10.1
 
 echo ========================================
-echo          _davSPACE v1.0.3
+echo          _davSPACE v26.10.1
 echo ========================================
 echo.
 where node >nul 2>nul || goto node_error

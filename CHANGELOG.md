@@ -1,5 +1,17 @@
 # Changelog
 
+## 26.10.1
+
+- Adottato il nuovo standard di versioning `_davstudios` `YY.M.REVISIONE`.
+- Sincronizzata la versione `26.10.1` nei metadata npm, Tauri, Cargo e relativi lockfile.
+- Standardizzati publisher, homepage, copyright, licenza MIT, categoria Productivity, descrizioni del pacchetto e metadata Linux.
+- Mantenuto invariato l'identifier storico `studio.dav.space`.
+- Aggiunte al README le istruzioni per le release non firmate su Windows, macOS e Linux.
+- Il workflow GitHub usa ora automaticamente la Description bilingue del commit associato al tag come descrizione della GitHub Release.
+- Aggiunta la verifica obbligatoria delle sezioni `🇮🇹` e `🇺🇸` prima della pubblicazione.
+- Rafforzato il workflow Linux contro repository Microsoft non raggiungibili.
+- Nessuna modifica al motore di scansione, all'interfaccia o alla logica funzionale dell'app.
+
 ## 1.0.3
 
 Patch del flusso di release GitHub, senza modifiche funzionali all'app.

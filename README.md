@@ -7,13 +7,25 @@
 Analizzatore locale dello spazio su disco per Windows, macOS e Linux.  
 Local disk space analyzer for Windows, macOS and Linux.
 
-**v1.0.3 · Local-first · No telemetry**
+**v26.10.1 · Local-first · No telemetry**
 
 Interfaccia allineata al design system di `_davMEDIA` e della suite `_davstudios`.
 
 ## Italiano
 
 `_davSPACE` analizza una cartella o un disco senza modificare i file e senza inviare dati online.
+
+### v26.10.1
+
+Release di allineamento al nuovo standard `_davstudios`, senza modifiche funzionali al motore di scansione o all'interfaccia.
+
+- Adottato il versioning `YY.M.REVISIONE`.
+- Versione sincronizzata a `26.10.1` tra package npm, package-lock, Tauri, Cargo e Cargo.lock.
+- Standardizzati metadata ufficiali, licenza MIT, categoria Productivity e metadata Debian Linux.
+- Mantenuto invariato l'identifier storico `studio.dav.space`.
+- Workflow GitHub aggiornato per usare la Description bilingue del commit come corpo della Release.
+- Rafforzata la build Linux contro repository Microsoft non raggiungibili.
+- Nessuna modifica al motore di scansione o alla logica funzionale dell'app.
 
 ### v1.0.3
 
@@ -69,11 +81,55 @@ npm install
 npm run desktop
 ```
 
-La release corrente è `v1.0.3`, patch della prima versione stabile `v1.0.0`.
+La release corrente è `v26.10.1` e adotta il nuovo standard di versioning e packaging `_davstudios`; `v1.0.0` rimane la prima release stabile.
+
+## Installazione delle release GitHub non firmate
+
+Le release di `_davSPACE` sono distribuite direttamente tramite GitHub e, al momento, non utilizzano certificati commerciali di code signing o notarizzazione Apple. Il codice sorgente è disponibile pubblicamente con licenza MIT.
+
+### Windows
+
+Windows SmartScreen può mostrare l'avviso **“Windows ha protetto il PC”** perché l'installer non è firmato con un certificato di publisher attendibile. Se hai scaricato il file dalla repository GitHub ufficiale di `_davstudios`, seleziona **Ulteriori informazioni** e poi **Esegui comunque**.
+
+### macOS
+
+Gatekeeper può impedire la prima apertura perché l'app non è firmata con Developer ID e non è notarizzata da Apple. Dopo aver tentato di aprire l'app, vai in **Impostazioni di Sistema → Privacy e Sicurezza**, individua il messaggio relativo a `_davSPACE` e scegli **Apri comunque**.
+
+### Linux
+
+Per un'AppImage può essere necessario rendere il file eseguibile prima dell'avvio:
+
+```bash
+chmod +x _davSPACE*.AppImage
+```
+
+Scarica sempre le release dalla repository GitHub ufficiale di `_davstudios`.
+
+## Informazioni pacchetto
+
+- Developer / Publisher: `_davstudios`
+- Homepage: https://davstudios.it
+- Copyright: © 2026 _davstudios
+- Licenza: MIT
+- Categoria: Productivity
+- Bundle identifier: `studio.dav.space`
+- Versione corrente: `26.10.1`
 
 ## English
 
 `_davSPACE` analyzes a folder or drive without modifying files or uploading data.
+
+### v26.10.1
+
+Release aligned with the new `_davstudios` standard, with no functional changes to the scan engine or interface.
+
+- Adopted the `YY.M.REVISIONE` versioning scheme.
+- Version synchronized to `26.10.1` across npm package, package-lock, Tauri, Cargo and Cargo.lock.
+- Standardized official metadata, MIT license, Productivity category and Linux Debian metadata.
+- Preserved the historical `studio.dav.space` identifier.
+- GitHub workflow updated to use the bilingual commit Description as the Release body.
+- Linux build hardened against unreachable Microsoft repositories.
+- No changes to the scan engine or the application's functional logic.
 
 ### v1.0.3
 
@@ -129,7 +185,39 @@ npm install
 npm run desktop
 ```
 
-The current release is `v1.0.3`, a patch to the first stable `v1.0.0` release.
+The current release is `v26.10.1` and adopts the new `_davstudios` versioning and packaging standard; `v1.0.0` remains the first stable release.
+
+## Installing unsigned GitHub releases
+
+`_davSPACE` releases are distributed directly through GitHub and currently do not use a commercial Windows code-signing certificate or Apple Developer ID notarization. The source code is publicly available under the MIT License.
+
+### Windows
+
+Windows SmartScreen may display **“Windows protected your PC”** because the installer is not signed by a trusted publisher certificate. If you downloaded the file from the official `_davstudios` GitHub repository, choose **More info** and then **Run anyway**.
+
+### macOS
+
+Gatekeeper may block the first launch because the app is not signed with Developer ID and notarized by Apple. After attempting to open the app, go to **System Settings → Privacy & Security**, find the `_davSPACE` message and choose **Open Anyway**.
+
+### Linux
+
+An AppImage may need to be marked as executable before launch:
+
+```bash
+chmod +x _davSPACE*.AppImage
+```
+
+Always download releases from the official `_davstudios` GitHub repository.
+
+## Package information
+
+- Developer / Publisher: `_davstudios`
+- Homepage: https://davstudios.it
+- Copyright: © 2026 _davstudios
+- License: MIT
+- Category: Productivity
+- Bundle identifier: `studio.dav.space`
+- Current version: `26.10.1`
 
 ## Support _davstudios
 

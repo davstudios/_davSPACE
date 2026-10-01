@@ -5,14 +5,20 @@ import fs from 'node:fs';
 const packageJson=JSON.parse(fs.readFileSync('package.json','utf8'));
 const tauri=JSON.parse(fs.readFileSync('src-tauri/tauri.conf.json','utf8'));
 const cargo=fs.readFileSync('src-tauri/Cargo.toml','utf8');
+const packageLock=JSON.parse(fs.readFileSync('package-lock.json','utf8'));
+const cargoLock=fs.readFileSync('src-tauri/Cargo.lock','utf8');
 const main=fs.readFileSync('src/main.js','utf8');
 const vite=fs.readFileSync('vite.config.js','utf8');
 const rustVersion=cargo.match(/^version\s*=\s*"([^"]+)"/m)?.[1];
 
 test('versioni tecniche sincronizzate',()=>{
-  assert.equal(packageJson.version,'1.0.3');
+  assert.equal(packageJson.version,'26.10.1');
+  assert.equal(packageLock.version,packageJson.version);
+  assert.equal(packageLock.packages[''].version,packageJson.version);
   assert.equal(tauri.version,packageJson.version);
   assert.equal(rustVersion,packageJson.version);
+  const cargoLockVersion=cargoLock.match(/\[\[package\]\]\nname = "davspace"\nversion = "([^"]+)"/)?.[1];
+  assert.equal(cargoLockVersion,packageJson.version);
 });
 
 test('interfaccia legge versione da Tauri',()=>{

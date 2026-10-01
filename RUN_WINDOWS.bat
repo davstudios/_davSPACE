@@ -2,10 +2,10 @@
 setlocal EnableExtensions
 chcp 65001 >nul
 cd /d "%~dp0"
-title _davSPACE v0.1.0 Preview
+title _davSPACE v26.10.1
 
 echo ========================================
-echo   _davSPACE v0.1.0 Preview
+echo   _davSPACE v26.10.1
 echo ========================================
 echo.
 

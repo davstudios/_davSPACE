@@ -1,27 +1,16 @@
-# GitHub setup
+# GitHub release setup
 
-## Creazione repository con GitHub Desktop
-
-Impostare:
-
-- Name: `_davSPACE`
-- Local path: la cartella padre, ad esempio `C:\Users\_davstudios\Documents\GitHub`
-- Description: `Cross-platform local disk space analyzer by _davstudios.`
-- Initialize this repository with a README: disattivato
-- Git ignore: `None`
-- License: `None`
-
-README, `.gitignore` e licenza MIT sono già inclusi nel progetto.
-
-Dopo la creazione, copiare il contenuto del progetto direttamente nella cartella repository `_davSPACE`, quindi creare il primo commit e pubblicare il repository su GitHub.
-
-## Preview v0.1.0
-
-Dopo il push del progetto puoi avviare il workflow dalla scheda `Actions`, oppure creare e inviare il tag:
+1. Mantieni la repository pubblica.
+2. Inserisci in GitHub Desktop il Summary nel formato `_davSPACE v26.10.1`.
+3. Inserisci nella Description del commit le modifiche complete in entrambe le lingue, iniziando con `🇮🇹` e `🇺🇸`.
+4. Esegui il commit e `Push origin`.
+5. Crea e pubblica il tag della release:
 
 ```bash
-git tag -a v0.1.0 -m "Preview _davSPACE v0.1.0"
-git push origin v0.1.0
+git tag -a v26.10.1 -m "Release _davSPACE v26.10.1"
+git push origin v26.10.1
 ```
 
-La pipeline crea le build Windows, macOS e Linux e pubblica una GitHub prerelease.
+Il workflow `.github/workflows/release.yml` verifica che tag, `package.json`, Tauri e Cargo abbiano la stessa versione. La Description bilingue del commit associato al tag viene usata automaticamente come descrizione della GitHub Release.
+
+La release viene pubblicata come stabile (`prerelease: false`) con gli asset Windows, macOS e Linux generati dai runner GitHub Actions.
