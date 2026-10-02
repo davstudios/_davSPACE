@@ -12,12 +12,19 @@ const vite=fs.readFileSync('vite.config.js','utf8');
 const rustVersion=cargo.match(/^version\s*=\s*"([^"]+)"/m)?.[1];
 
 test('versioni tecniche sincronizzate',()=>{
-  assert.equal(packageJson.version,'26.10.1');
+  assert.equal(packageJson.version,'26.10.2');
   assert.equal(packageLock.version,packageJson.version);
   assert.equal(packageLock.packages[''].version,packageJson.version);
   assert.equal(tauri.version,packageJson.version);
   assert.equal(rustVersion,packageJson.version);
-  const cargoLockVersion=cargoLock.match(/\[\[package\]\]\nname = "davspace"\nversion = "([^"]+)"/)?.[1];
+  const cargoLockVersion=cargoLock.match(/\[\[package\]\]\r?\nname = "davspace"\r?\nversion = "([^"]+)"/)?.[1];
+  assert.equal(cargoLockVersion,packageJson.version);
+});
+
+
+test('Cargo.lock resta leggibile con CRLF Windows',()=>{
+  const windowsCargoLock=cargoLock.replace(/(?<!\r)\n/g,'\r\n');
+  const cargoLockVersion=windowsCargoLock.match(/\[\[package\]\]\r?\nname = "davspace"\r?\nversion = "([^"]+)"/)?.[1];
   assert.equal(cargoLockVersion,packageJson.version);
 });
 

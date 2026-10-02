@@ -1,5 +1,14 @@
 # Changelog
 
+## 26.10.2
+
+- Sincronizzata la release corrente a `26.10.2` in package npm, package-lock, Tauri, Cargo, Cargo.lock, documentazione e test.
+- Corretto il test di sincronizzazione di `Cargo.lock` che su checkout Windows con terminatori CRLF poteva restituire una versione `undefined` e bloccare la pipeline prima della build.
+- Aggiunto un test di regressione esplicito per i terminatori CRLF di Windows.
+- Rafforzata `.gitattributes` imponendo LF agli script shell e a `src-tauri/Cargo.lock`.
+- Preservati integralmente metadata `_davstudios`, identifier storico `studio.dav.space`, workflow bilingue e hardening Linux.
+- Nessuna modifica al motore di scansione, all'interfaccia o alla logica funzionale dell'app.
+
 ## 26.10.1
 
 - Adottato il nuovo standard di versioning `_davstudios` `YY.M.REVISIONE`.

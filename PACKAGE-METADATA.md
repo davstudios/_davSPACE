@@ -1,8 +1,8 @@
 # _davSPACE — Package metadata
 
 - Product name: `_davSPACE`
-- Version: `26.10.1`
-- Public release tag: `v26.10.1`
+- Version: `26.10.2`
+- Public release tag: `v26.10.2`
 - Developer / Publisher: `_davstudios`
 - Identifier: `studio.dav.space`
 - Homepage / Support: `https://davstudios.it`

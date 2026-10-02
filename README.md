@@ -7,13 +7,24 @@
 Analizzatore locale dello spazio su disco per Windows, macOS e Linux.  
 Local disk space analyzer for Windows, macOS and Linux.
 
-**v26.10.1 · Local-first · No telemetry**
+**v26.10.2 · Local-first · No telemetry**
 
 Interfaccia allineata al design system di `_davMEDIA` e della suite `_davstudios`.
 
 ## Italiano
 
 `_davSPACE` analizza una cartella o un disco senza modificare i file e senza inviare dati online.
+
+### v26.10.2
+
+Patch di affidabilità della pipeline multipiattaforma, senza modifiche funzionali al motore di scansione o all'interfaccia.
+
+- Versione sincronizzata a `26.10.2` tra package npm, package-lock, Tauri, Cargo e Cargo.lock.
+- Corretto il test di sincronizzazione di `Cargo.lock` affinché gestisca sia terminatori di riga LF sia CRLF nei checkout Windows.
+- Aggiunta una regressione automatica specifica per il checkout Windows.
+- Rafforzata la normalizzazione Git dei file shell e di `Cargo.lock`.
+- Preservati metadata `_davstudios`, identifier `studio.dav.space` e workflow release bilingue.
+- Nessuna modifica al motore di scansione o alla logica funzionale dell'app.
 
 ### v26.10.1
 
@@ -81,7 +92,7 @@ npm install
 npm run desktop
 ```
 
-La release corrente è `v26.10.1` e adotta il nuovo standard di versioning e packaging `_davstudios`; `v1.0.0` rimane la prima release stabile.
+La release corrente è `v26.10.2` e adotta il nuovo standard di versioning e packaging `_davstudios`; `v1.0.0` rimane la prima release stabile.
 
 ## Installazione delle release GitHub non firmate
 
@@ -113,11 +124,22 @@ Scarica sempre le release dalla repository GitHub ufficiale di `_davstudios`.
 - Licenza: MIT
 - Categoria: Productivity
 - Bundle identifier: `studio.dav.space`
-- Versione corrente: `26.10.1`
+- Versione corrente: `26.10.2`
 
 ## English
 
 `_davSPACE` analyzes a folder or drive without modifying files or uploading data.
+
+### v26.10.2
+
+Cross-platform release-pipeline reliability patch with no functional changes to the scan engine or interface.
+
+- Version synchronized to `26.10.2` across npm package, package-lock, Tauri, Cargo and Cargo.lock.
+- Fixed the `Cargo.lock` synchronization test so it accepts both LF and CRLF line endings on Windows checkouts.
+- Added a dedicated automated regression check for Windows-style CRLF checkout behavior.
+- Strengthened Git line-ending normalization for shell files and `Cargo.lock`.
+- Preserved `_davstudios` metadata, the `studio.dav.space` identifier and the bilingual release workflow.
+- No changes to the scan engine or the application's functional logic.
 
 ### v26.10.1
 
@@ -185,7 +207,7 @@ npm install
 npm run desktop
 ```
 
-The current release is `v26.10.1` and adopts the new `_davstudios` versioning and packaging standard; `v1.0.0` remains the first stable release.
+The current release is `v26.10.2` and adopts the new `_davstudios` versioning and packaging standard; `v1.0.0` remains the first stable release.
 
 ## Installing unsigned GitHub releases
 
@@ -217,7 +239,7 @@ Always download releases from the official `_davstudios` GitHub repository.
 - License: MIT
 - Category: Productivity
 - Bundle identifier: `studio.dav.space`
-- Current version: `26.10.1`
+- Current version: `26.10.2`
 
 ## Support _davstudios
 

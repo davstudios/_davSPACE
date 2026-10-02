@@ -30,7 +30,7 @@ test('frontend and Tauri dependency versions match the proven base',()=>{
 
 test('release metadata and required files are coherent',()=>{
   const rustVersion=cargo.match(/^version\s*=\s*"([^"]+)"/m)?.[1];
-  assert.equal(packageJson.version,'26.10.1');
+  assert.equal(packageJson.version,'26.10.2');
   assert.equal(tauri.version,packageJson.version);
   assert.equal(rustVersion,packageJson.version);
   for(const path of ['README.md','CHANGELOG.md','src-tauri/icons/icon.ico'])assert.equal(fs.existsSync(path),true);
@@ -85,8 +85,8 @@ test('identifier storico resta invariato',()=>{
 
 test('package metadata e set icone documentano lo standard release',()=>{
   const metadata=fs.readFileSync('PACKAGE-METADATA.md','utf8');
-  assert.match(metadata,/Version: `26\.10\.1`/);
-  assert.match(metadata,/Public release tag: `v26\.10\.1`/);
+  assert.match(metadata,/Version: `26\.10\.2`/);
+  assert.match(metadata,/Public release tag: `v26\.10\.2`/);
   assert.match(metadata,/Developer \/ Publisher: `_davstudios`/);
   assert.match(metadata,/Identifier: `studio\.dav\.space`/);
   assert.match(metadata,/Category: `Productivity`/);
