@@ -1,5 +1,14 @@
 # Changelog
 
+## 26.10.3
+
+- Eseguita la repository normalization completa dei file testuali con regole EOL/EOF deterministiche, così da riallinearli al commit della release corrente senza modifiche funzionali.
+- Sincronizzata la release `26.10.3` in package npm, package-lock, Tauri, Cargo, Cargo.lock, documentazione e test.
+- Rafforzato il controllo GitHub Actions della versione includendo `package-lock.json` e `Cargo.lock`.
+- Mantenuta la compatibilità LF/CRLF del parser `Cargo.lock` per i checkout Windows.
+- Preservati byte-per-byte gli asset binari e aggiunti metadata dedicati nelle cartelle `public` e `src-tauri/icons`.
+- Preservati integralmente motore di scansione, interfaccia, identifier storico e metadata `_davstudios`.
+
 ## 26.10.2
 
 - Sincronizzata la release corrente a `26.10.2` in package npm, package-lock, Tauri, Cargo, Cargo.lock, documentazione e test.
@@ -75,3 +84,4 @@ Preview locale ricostruita di `_davSPACE`.
 - Drag & drop di cartelle e dischi.
 - Tema system/light/dark e Italiano/English.
 - Preview Vite resa sicura anche fuori dall'ambiente Tauri.
+

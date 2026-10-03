@@ -206,3 +206,4 @@ fn scan_directory_blocking(path: String) -> Result<ScanResult, String> {
         largest_files,
     })
 }
+

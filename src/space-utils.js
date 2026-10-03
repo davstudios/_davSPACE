@@ -40,3 +40,4 @@ export function sortLargest(files) {
 export function topItems(items, limit = 12) {
   return [...items].sort((a, b) => Number(b.size) - Number(a.size)).slice(0, limit);
 }
+

@@ -41,3 +41,4 @@ test('topItems limits and sorts buckets', () => {
   const result = topItems([{ size: 2 }, { size: 8 }, { size: 4 }], 2);
   assert.deepEqual(result.map((item) => item.size), [8, 4]);
 });
+

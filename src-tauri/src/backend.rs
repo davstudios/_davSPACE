@@ -22,3 +22,4 @@ pub fn run_action(action: String, paths: Vec<String>, _options: ActionOptions) -
     let big_text=largest.into_iter().map(|(s,p)|format!("{} bytes · {}",s,p)).collect::<Vec<_>>().join("\n");
     result(true,"Scan completed",&format!("{} files · {} folders · {} bytes",files,dirs,total),format!("CATEGORIES\n{}\n\nLARGEST FILES\n{}",cat_text,big_text))
 }
+

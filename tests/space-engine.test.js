@@ -41,3 +41,4 @@ test('pagina risultati senza limiti artificiali',()=>{
   assert.equal(page.pages,3);
   assert.equal(page.total,451);
 });
+

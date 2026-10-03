@@ -664,7 +664,7 @@ dependencies = [
 
 [[package]]
 name = "davspace"
-version = "26.10.2"
+version = "26.10.3"
 dependencies = [
  "serde",
  "serde_json",
@@ -5202,3 +5202,4 @@ dependencies = [
  "syn 3.0.5",
  "winnow 1.0.4",
 ]
+

@@ -1,5 +1,5 @@
-_davSPACE v26.10.2 — Test report
-Date: 2026-10-01
+_davSPACE v26.10.3 — Test report
+Date: 2026-10-02
 
 Automated tests: 29/29 passed
 - Core utility tests: passed
@@ -12,6 +12,7 @@ Automated tests: 29/29 passed
 - Historical identifier contract: passed
 - Tauri icon-set contract: passed
 - Version synchronization across package/lock/Tauri/Cargo/Cargo.lock: passed
+- Release workflow lockfile-version verification: passed
 - Windows CRLF Cargo.lock regression: passed
 
 Static validation:
@@ -27,8 +28,8 @@ Static validation:
 - .github/workflows/release.yml: valid YAML
 
 Bundle metadata:
-- Version: 26.10.2
-- Public tag: v26.10.2
+- Version: 26.10.3
+- Public tag: v26.10.3
 - Publisher: _davstudios
 - Homepage: https://davstudios.it
 - License: MIT
@@ -47,8 +48,12 @@ Release workflow:
 - Linux apt workflow hardened against unavailable Microsoft repositories
 
 Functional comparison:
-- Frontend source files, Rust backend/scanner files, Vite configuration and index.html were checksum-compared against the v26.10.1 package used as the patch baseline.
-- No functional differences were introduced by this metadata/release-standard update.
+- Frontend and Rust functional sources are preserved from the v26.10.2 baseline apart from repository-normalization whitespace at EOF.
+- Binary assets are preserved byte-for-byte.
+- Repository text files are intentionally normalized so Git associates them with the v26.10.3 release commit.
+- 55/55 pre-existing text files changed as part of the normalization; 7/7 pre-existing binary assets remain byte-for-byte identical.
+- Dedicated release metadata was added to `public` and `src-tauri/icons` so binary-only directories can be associated with the current release without altering artwork.
+- No functional differences were introduced by this repository-normalization update.
 
 Code signing:
 - No trusted commercial Windows code-signing certificate configured.
@@ -59,3 +64,4 @@ Build validation:
 - Frontend dependency installation was attempted, but the sandbox package-download step timed out before Vite could be installed; JavaScript syntax and the full test suite were validated independently.
 - Cargo is not available in this execution environment, so the native Tauri/Rust bundle was not compiled here.
 - GitHub Actions remains responsible for native Windows, macOS and Linux release builds.
+
