@@ -18,7 +18,7 @@ function cargoLockVersion(text) {
 }
 
 test('versioni tecniche sincronizzate', () => {
-  assert.equal(packageJson.version, '26.10.3');
+  assert.equal(packageJson.version, '26.10.4');
   assert.equal(packageLock.version, packageJson.version);
   assert.equal(packageLock.packages[''].version, packageJson.version);
   assert.equal(tauriConfig.version, packageJson.version);
@@ -31,9 +31,11 @@ test('Cargo.lock resta leggibile con CRLF Windows', () => {
   assert.equal(cargoLockVersion(windowsCargoLock), packageJson.version);
 });
 
-test('interfaccia legge versione da Tauri', () => {
-  assert.match(mainSource, /getVersion/);
-  assert.doesNotMatch(mainSource, /v0\.1\.0/);
+test('versione non viene duplicata nella UI ordinaria', () => {
+  assert.doesNotMatch(mainSource, /getVersion/);
+  assert.doesNotMatch(mainSource, /state\.version/);
+  assert.doesNotMatch(mainSource, /class=\"version\">v/);
+  assert.match(mainSource, /MIT · Open source/);
 });
 
 test('Vite usa Oxc e ignora src-tauri', () => {

@@ -1,6 +1,6 @@
 {
   "name": "davspace-app",
-  "version": "26.10.3",
+  "version": "26.10.4",
   "private": true,
   "type": "module",
   "description": "_davSPACE — local disk space analyzer for Windows, macOS and Linux by _davstudios.",

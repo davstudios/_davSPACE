@@ -1,274 +1,241 @@
 <div align="center">
   <img src="src-tauri/icons/app-icon.png" width="112" alt="_davSPACE icon">
+
+# _davSPACE
+
+**Analizza lo spazio occupato su dischi e cartelle interamente in locale.**  
+**Analyze disk and folder usage entirely locally.**
+
+Windows · macOS · Linux · Local-first · Open source
+
+[![Italiano](https://img.shields.io/badge/Italiano-006EDB?style=for-the-badge)](#-italiano)
+[![English](https://img.shields.io/badge/English-141416?style=for-the-badge)](#-english)
 </div>
 
-# `_davSPACE`
+---
 
-Analizzatore locale dello spazio su disco per Windows, macOS e Linux.  
-Local disk space analyzer for Windows, macOS and Linux.
+# 🇮🇹 Italiano
 
-**v26.10.3 · Local-first · No telemetry**
+_davSPACE è un'app desktop multipiattaforma di **_davstudios** per capire rapidamente quali file e cartelle occupano più spazio. La scansione legge il file system localmente, non carica dati online e non elimina o sposta automaticamente alcun elemento.
 
-Interfaccia allineata al design system di `_davMEDIA` e della suite `_davstudios`.
+<p>
+  <a href="https://www.davstudios.it"><img src=".github/assets/website-it.svg" height="46" alt="Visita il sito"></a>
+  <a href="https://buymeacoffee.com/davstudios"><img src=".github/assets/buy-coffee-it.svg" height="46" alt="Offrimi Un Caffè"></a>
+</p>
 
-## Italiano
+## Funzioni principali
 
-`_davSPACE` analizza una cartella o un disco senza modificare i file e senza inviare dati online.
+- scansione ricorsiva di cartelle e radici di disco;
+- link simbolici ignorati per evitare percorsi ciclici o inattesi;
+- annullamento della scansione con disponibilità dei risultati parziali;
+- totale di spazio analizzato, file, cartelle ed elementi non accessibili;
+- cartelle ordinate per dimensione ricorsiva;
+- file ordinati per dimensione;
+- ricerca per nome, percorso, estensione e categoria;
+- soglia minima configurabile per la dimensione dei file;
+- categorie Video, Immagini, Audio, Archivi, Documenti, Codice e Altro;
+- paginazione senza limite artificiale al numero di elementi scansionati;
+- apertura della posizione di file e cartelle nel file manager di sistema;
+- drag & drop di cartelle o dischi;
+- esclusione opzionale di nomi cartella;
+- interfaccia italiana e inglese;
+- tema Sistema, Chiaro e Scuro;
+- motion system coerente con il sito `_davstudios`.
 
-### v26.10.3
+## Sicurezza della scansione
 
-Release di repository normalization, senza modifiche funzionali al motore di scansione o all'interfaccia.
+_davSPACE è progettato come analizzatore **sola lettura**: il motore di scansione non elimina, rinomina, copia o sposta file. I link simbolici non vengono seguiti e gli errori di accesso vengono conteggiati senza interrompere l'intera scansione.
 
-- Versione sincronizzata a `26.10.3` tra package npm, package-lock, Tauri, Cargo e Cargo.lock.
-- Normalizzati tutti i file testuali del repository con regole EOL/EOF deterministiche, così da riallinearli al commit della release corrente.
-- Preservati byte-per-byte gli asset binari; le cartelle `public` e `src-tauri/icons` includono metadata di release dedicati senza ricodificare le immagini.
-- Rafforzata la verifica GitHub Actions includendo package-lock e Cargo.lock oltre a package, Tauri e Cargo.
-- Mantenuto il parser Cargo.lock compatibile con LF e CRLF per i checkout Windows.
-- Nessuna modifica al motore di scansione, all'interfaccia o alla logica funzionale dell'app.
+Il pulsante per aprire la posizione delega esclusivamente al file manager del sistema operativo: Explorer su Windows, Finder su macOS e `xdg-open` su Linux.
 
-### v26.10.2
+## Privacy e local-first
 
-Patch di affidabilità della pipeline multipiattaforma, senza modifiche funzionali al motore di scansione o all'interfaccia.
+- nessun account;
+- nessun upload dei file;
+- nessuna telemetria integrata;
+- analisi eseguita localmente;
+- preferenze salvate localmente sul dispositivo.
 
-- Versione sincronizzata a `26.10.2` tra package npm, package-lock, Tauri, Cargo e Cargo.lock.
-- Corretto il test di sincronizzazione di `Cargo.lock` affinché gestisca sia terminatori di riga LF sia CRLF nei checkout Windows.
-- Aggiunta una regressione automatica specifica per il checkout Windows.
-- Rafforzata la normalizzazione Git dei file shell e di `Cargo.lock`.
-- Preservati metadata `_davstudios`, identifier `studio.dav.space` e workflow release bilingue.
-- Nessuna modifica al motore di scansione o alla logica funzionale dell'app.
+## Piattaforme
 
-### v26.10.1
+| Sistema | Architettura | Pacchetto |
+| --- | --- | --- |
+| Windows 10/11 | x64 | NSIS `.exe` |
+| macOS | Intel + Apple Silicon | Universal `.dmg` |
+| Linux | x64 | `.AppImage` / `.deb` |
 
-Release di allineamento al nuovo standard `_davstudios`, senza modifiche funzionali al motore di scansione o all'interfaccia.
+Le release vengono compilate tramite GitHub Actions sui rispettivi sistemi operativi.
 
-- Adottato il versioning `YY.M.REVISIONE`.
-- Versione sincronizzata a `26.10.1` tra package npm, package-lock, Tauri, Cargo e Cargo.lock.
-- Standardizzati metadata ufficiali, licenza MIT, categoria Productivity e metadata Debian Linux.
-- Mantenuto invariato l'identifier storico `studio.dav.space`.
-- Workflow GitHub aggiornato per usare la Description bilingue del commit come corpo della Release.
-- Rafforzata la build Linux contro repository Microsoft non raggiungibili.
-- Nessuna modifica al motore di scansione o alla logica funzionale dell'app.
+## Installazione di release non firmate
 
-### v1.0.3
+Le build pubbliche non utilizzano attualmente un certificato commerciale Windows né Apple Developer ID/notarizzazione. Scarica sempre gli artefatti dalla repository GitHub ufficiale di `_davstudios`.
 
-Patch del flusso di release GitHub, senza modifiche funzionali all’app.
+### Windows
 
-- Versione sincronizzata a 1.0.3 tra package npm, Tauri e Cargo.
-- Inclusa `.github/workflows/release.yml` nel pacchetto distribuito.
-- Workflow di release allineata al modello stabile di `_davRENAME`.
-- Il tag pubblicato viene usato direttamente per creare la GitHub Release stabile.
-- Nessuna modifica al motore di scansione o all’interfaccia.
+SmartScreen può mostrare **Windows ha protetto il PC**. Se il file proviene dalla repository ufficiale, scegli **Ulteriori informazioni → Esegui comunque**. La build Release usa il Windows GUI subsystem e non apre una finestra CMD separata. Anche l'helper usato per mostrare file e cartelle in Explorer viene avviato senza console visibili.
 
-### v1.0.2
+### macOS
 
-Patch di release senza modifiche funzionali, preparata per un nuovo ciclo pulito di commit/tag/release.
+Se Gatekeeper blocca la prima apertura, prova ad aprire l'app e poi vai in **Impostazioni di Sistema → Privacy e Sicurezza → Apri comunque**.
 
-- Versione sincronizzata a 1.0.2 tra package npm, Tauri e Cargo.
-- Aggiornati metadata, test e launcher alla nuova patch.
-- Nessuna modifica al motore di scansione o all’interfaccia.
+### Linux
 
-### v1.0.1
+Per un'AppImage può essere necessario renderla eseguibile:
 
-Patch di affidabilità per build e CI multipiattaforma.
+```bash
+chmod +x _davSPACE*.AppImage
+```
 
-- Launcher Windows riallineato al flusso verificato della suite.
-- Configurazione Vite resa coerente con il contratto Tauri usato nei test.
-- Metadata e test di release aggiornati alla versione 1.0.1.
+## Sviluppo
 
-### v1.0.0
-
-- Scansione ricorsiva di cartelle e dischi.
-- Link simbolici non seguiti.
-- Annullamento della scansione con risultati parziali.
-- Totale spazio, file, cartelle ed elementi non accessibili.
-- Cartelle ordinate per dimensione ricorsiva.
-- File ordinati per dimensione con ricerca, categoria e soglia minima.
-- Categorie Video, Immagini, Audio, Archivi, Documenti, Codice e Altro.
-- Paginazione senza limite artificiale al numero di file scansionati.
-- Apertura della posizione di file e cartelle.
-- Drag & drop di una cartella o disco.
-- Esclusione opzionale di nomi cartella.
-- Tema chiaro/scuro e Italiano/English.
-- Versione UI letta automaticamente da Tauri.
-- Elaborazione interamente locale.
-
-### Avvio su Windows
-
-`RUN-WINDOWS.bat`
-
-Oppure:
+Requisiti: Node.js, Rust e prerequisiti Tauri del sistema operativo.
 
 ```bash
 npm install
 npm run desktop
 ```
 
-La release corrente è `v26.10.3` e adotta il nuovo standard di versioning e packaging `_davstudios`; `v1.0.0` rimane la prima release stabile.
+Test:
 
-## Installazione delle release GitHub non firmate
+```bash
+npm test
+```
 
-Le release di `_davSPACE` sono distribuite direttamente tramite GitHub e, al momento, non utilizzano certificati commerciali di code signing o notarizzazione Apple. Il codice sorgente è disponibile pubblicamente con licenza MIT.
+Build locale:
+
+```bash
+npm run bundle
+```
+
+Gli artefatti vengono generati in `src-tauri/target/release/bundle/`.
+
+## Stack e identità
+
+- Tauri 2;
+- Rust;
+- JavaScript + Vite;
+- WalkDir per la scansione ricorsiva;
+- Plus Jakarta Sans;
+- motion system coerente con il sito `_davstudios`;
+- bundle identifier stabile: `studio.dav.space`;
+- licenza MIT.
+
+La versione dell'app è gestita nei manifest tecnici e nelle GitHub Release; non viene mostrata nell'interfaccia ordinaria per mantenere la UI pulita e impedire stringhe di versione duplicate.
+
+## Licenza
+
+Distribuito con licenza **MIT**. Consulta [`LICENSE`](LICENSE).
+
+---
+
+# 🇺🇸 English
+
+_davSPACE is a cross-platform desktop app by **_davstudios** for quickly understanding which files and folders use the most disk space. Scanning reads the file system locally, uploads no data and never deletes or moves items automatically.
+
+<p>
+  <a href="https://www.davstudios.it/en"><img src=".github/assets/website-en.svg" height="46" alt="Visit website"></a>
+  <a href="https://buymeacoffee.com/davstudios"><img src=".github/assets/buy-coffee-en.svg" height="46" alt="Buy Me A Coffee"></a>
+</p>
+
+## Main features
+
+- recursive scanning of folders and drive roots;
+- symbolic links ignored to avoid cyclic or unexpected paths;
+- cancellable scanning with partial results retained;
+- analyzed-space, file, folder and inaccessible-item totals;
+- folders sorted by recursive size;
+- files sorted by size;
+- search by name, path, extension and category;
+- configurable minimum file-size threshold;
+- Video, Images, Audio, Archives, Documents, Code and Other categories;
+- pagination without an artificial limit on scanned items;
+- reveal files and folders in the operating system's file manager;
+- folder or drive drag and drop;
+- optional folder-name exclusions;
+- Italian and English interface;
+- System, Light and Dark themes;
+- motion system aligned with the `_davstudios` website.
+
+## Scan safety
+
+_davSPACE is designed as a **read-only** analyzer: the scanning engine does not delete, rename, copy or move files. Symbolic links are not followed and access errors are counted without aborting the entire scan.
+
+The reveal action only delegates to the operating system's file manager: Explorer on Windows, Finder on macOS and `xdg-open` on Linux.
+
+## Privacy and local-first
+
+- no account;
+- no file uploads;
+- no built-in telemetry;
+- analysis runs locally;
+- preferences are stored locally on the device.
+
+## Platforms
+
+| System | Architecture | Package |
+| --- | --- | --- |
+| Windows 10/11 | x64 | NSIS `.exe` |
+| macOS | Intel + Apple Silicon | Universal `.dmg` |
+| Linux | x64 | `.AppImage` / `.deb` |
+
+Releases are compiled through GitHub Actions on the corresponding operating systems.
+
+## Installing unsigned releases
+
+Public builds currently do not use a commercial Windows signing certificate or Apple Developer ID/notarization. Always download artifacts from the official `_davstudios` GitHub repository.
 
 ### Windows
 
-Windows SmartScreen può mostrare l'avviso **“Windows ha protetto il PC”** perché l'installer non è firmato con un certificato di publisher attendibile. Se hai scaricato il file dalla repository GitHub ufficiale di `_davstudios`, seleziona **Ulteriori informazioni** e poi **Esegui comunque**.
+SmartScreen may display **Windows protected your PC**. If the file comes from the official repository, choose **More info → Run anyway**. Release builds use the Windows GUI subsystem and do not open a separate CMD window. The helper used to reveal files and folders in Explorer also runs without a visible console.
 
 ### macOS
 
-Gatekeeper può impedire la prima apertura perché l'app non è firmata con Developer ID e non è notarizzata da Apple. Dopo aver tentato di aprire l'app, vai in **Impostazioni di Sistema → Privacy e Sicurezza**, individua il messaggio relativo a `_davSPACE` e scegli **Apri comunque**.
+If Gatekeeper blocks the first launch, attempt to open the app and then go to **System Settings → Privacy & Security → Open Anyway**.
 
 ### Linux
 
-Per un'AppImage può essere necessario rendere il file eseguibile prima dell'avvio:
+An AppImage may need to be marked executable:
 
 ```bash
 chmod +x _davSPACE*.AppImage
 ```
 
-Scarica sempre le release dalla repository GitHub ufficiale di `_davstudios`.
+## Development
 
-## Informazioni pacchetto
-
-- Developer / Publisher: `_davstudios`
-- Homepage: https://davstudios.it
-- Copyright: © 2026 _davstudios
-- Licenza: MIT
-- Categoria: Productivity
-- Bundle identifier: `studio.dav.space`
-- Versione corrente: `26.10.3`
-
-## English
-
-`_davSPACE` analyzes a folder or drive without modifying files or uploading data.
-
-### v26.10.3
-
-Repository-normalization release with no functional changes to the scan engine or interface.
-
-- Version synchronized to `26.10.3` across npm package, package-lock, Tauri, Cargo and Cargo.lock.
-- Normalized all repository text files with deterministic EOL/EOF rules so they are associated with the current release commit.
-- Preserved binary assets byte-for-byte; the `public` and `src-tauri/icons` directories include dedicated release metadata without re-encoding images.
-- Strengthened GitHub Actions release verification to include package-lock and Cargo.lock in addition to package, Tauri and Cargo.
-- Retained LF/CRLF-compatible Cargo.lock parsing for Windows checkouts.
-- No changes to the scan engine, interface or application's functional logic.
-
-### v26.10.2
-
-Cross-platform release-pipeline reliability patch with no functional changes to the scan engine or interface.
-
-- Version synchronized to `26.10.2` across npm package, package-lock, Tauri, Cargo and Cargo.lock.
-- Fixed the `Cargo.lock` synchronization test so it accepts both LF and CRLF line endings on Windows checkouts.
-- Added a dedicated automated regression check for Windows-style CRLF checkout behavior.
-- Strengthened Git line-ending normalization for shell files and `Cargo.lock`.
-- Preserved `_davstudios` metadata, the `studio.dav.space` identifier and the bilingual release workflow.
-- No changes to the scan engine or the application's functional logic.
-
-### v26.10.1
-
-Release aligned with the new `_davstudios` standard, with no functional changes to the scan engine or interface.
-
-- Adopted the `YY.M.REVISIONE` versioning scheme.
-- Version synchronized to `26.10.1` across npm package, package-lock, Tauri, Cargo and Cargo.lock.
-- Standardized official metadata, MIT license, Productivity category and Linux Debian metadata.
-- Preserved the historical `studio.dav.space` identifier.
-- GitHub workflow updated to use the bilingual commit Description as the Release body.
-- Linux build hardened against unreachable Microsoft repositories.
-- No changes to the scan engine or the application's functional logic.
-
-### v1.0.3
-
-GitHub release workflow patch with no functional changes to the app.
-
-- Version synchronized to 1.0.3 across npm package, Tauri and Cargo.
-- `.github/workflows/release.yml` is now included in the distributed package.
-- Release workflow aligned with the stable `_davRENAME` model.
-- The pushed tag is used directly to create the stable GitHub Release.
-- No changes to the scan engine or user interface.
-
-### v1.0.2
-
-Release-only patch with no functional changes, prepared for a clean new commit/tag/release cycle.
-
-- Version synchronized to 1.0.2 across npm package, Tauri and Cargo.
-- Metadata, tests and launcher updated to the new patch version.
-- No changes to the scan engine or user interface.
-
-### v1.0.1
-
-Reliability patch for cross-platform build and CI.
-
-- Windows launcher aligned with the suite's verified flow.
-- Vite configuration aligned with the Tauri contract used by tests.
-- Release metadata and tests updated to version 1.0.1.
-
-### v1.0.0
-
-- Recursive folder and drive scanning.
-- Symbolic links are not followed.
-- Scan cancellation with partial results.
-- Total space, files, folders and inaccessible items.
-- Folders sorted by recursive size.
-- Files sorted by size with search, category and minimum-size filters.
-- Video, Images, Audio, Archives, Documents, Code and Other categories.
-- Pagination with no artificial limit on scanned file count.
-- Reveal files and folders in the system file manager.
-- Folder or drive drag and drop.
-- Optional folder-name exclusions.
-- Light/dark theme and Italiano/English.
-- UI version read automatically from Tauri.
-- Fully local processing.
-
-### Windows launch
-
-`RUN-WINDOWS.bat`
-
-Or:
+Requirements: Node.js, Rust and the operating system's Tauri prerequisites.
 
 ```bash
 npm install
 npm run desktop
 ```
 
-The current release is `v26.10.3` and adopts the new `_davstudios` versioning and packaging standard; `v1.0.0` remains the first stable release.
-
-## Installing unsigned GitHub releases
-
-`_davSPACE` releases are distributed directly through GitHub and currently do not use a commercial Windows code-signing certificate or Apple Developer ID notarization. The source code is publicly available under the MIT License.
-
-### Windows
-
-Windows SmartScreen may display **“Windows protected your PC”** because the installer is not signed by a trusted publisher certificate. If you downloaded the file from the official `_davstudios` GitHub repository, choose **More info** and then **Run anyway**.
-
-### macOS
-
-Gatekeeper may block the first launch because the app is not signed with Developer ID and notarized by Apple. After attempting to open the app, go to **System Settings → Privacy & Security**, find the `_davSPACE` message and choose **Open Anyway**.
-
-### Linux
-
-An AppImage may need to be marked as executable before launch:
+Tests:
 
 ```bash
-chmod +x _davSPACE*.AppImage
+npm test
 ```
 
-Always download releases from the official `_davstudios` GitHub repository.
+Local build:
 
-## Package information
+```bash
+npm run bundle
+```
 
-- Developer / Publisher: `_davstudios`
-- Homepage: https://davstudios.it
-- Copyright: © 2026 _davstudios
-- License: MIT
-- Category: Productivity
-- Bundle identifier: `studio.dav.space`
-- Current version: `26.10.3`
+Artifacts are generated under `src-tauri/target/release/bundle/`.
 
-## Support _davstudios
+## Stack and identity
 
-Website: https://www.davstudios.it  
-Buy Me A Coffee: https://buymeacoffee.com/davstudios
+- Tauri 2;
+- Rust;
+- JavaScript + Vite;
+- WalkDir for recursive scanning;
+- Plus Jakarta Sans;
+- motion system aligned with the `_davstudios` website;
+- stable bundle identifier: `studio.dav.space`;
+- MIT license.
+
+The app version is managed through technical manifests and GitHub Releases; it is not displayed in the ordinary interface, keeping the UI clean and preventing duplicated version strings.
 
 ## License
 
-MIT
-
+Distributed under the **MIT License**. See [`LICENSE`](LICENSE).

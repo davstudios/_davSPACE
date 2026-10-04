@@ -1,7 +1,7 @@
-_davSPACE v26.10.3 — Test report
-Date: 2026-10-02
+_davSPACE v26.10.4 — Test report
+Date: 2026-10-04
 
-Automated tests: 29/29 passed
+Automated tests: 33/33 passed
 - Core utility tests: passed
 - Disk-space engine tests: passed
 - Space utility tests: passed
@@ -11,8 +11,15 @@ Automated tests: 29/29 passed
 - Linux release hardening contract: passed
 - Historical identifier contract: passed
 - Tauri icon-set contract: passed
+- _davstudios website v52 motion-system contract: passed
+- Real page exit/entrance transition contract: passed
+- Radial theme reveal and reduced-motion contract: passed
+- Windows GUI subsystem contract: passed
+- Hidden Explorer helper contract: passed
+- UI-without-version contract: passed
+- Buy Me A Coffee Italian wording contract: passed
+- Stable bilingual README contract: passed
 - Version synchronization across package/lock/Tauri/Cargo/Cargo.lock: passed
-- Release workflow lockfile-version verification: passed
 - Windows CRLF Cargo.lock regression: passed
 
 Static validation:
@@ -25,43 +32,39 @@ Static validation:
 - package-lock.json: valid JSON
 - src-tauri/tauri.conf.json: valid JSON
 - src-tauri/capabilities/default.json: valid JSON
+- generated Tauri schema JSON files: valid JSON
 - .github/workflows/release.yml: valid YAML
+- Linux/macOS shell scripts: bash syntax valid
+
+CRLF validation:
+- Cargo.lock was physically converted to Windows CRLF in a clean copy.
+- Full automated suite after conversion: 33/33 passed.
+
+Repository normalization:
+- 64/64 files already present in v26.10.3 are byte-different in v26.10.4.
+- PNG, ICO and ICNS application artwork remains pixel-for-pixel identical at every representation exposed by Pillow.
+- Binary changes affect only lossless encoding or container metadata.
+
+Functional preservation:
+- Read-only recursive scanning preserved.
+- Symbolic-link traversal remains disabled.
+- Scan cancellation and partial results preserved.
+- Largest files/folders, categories, search, size filters and pagination preserved.
+- Drag and drop, exclusions and reveal-location behavior preserved.
 
 Bundle metadata:
-- Version: 26.10.3
-- Public tag: v26.10.3
+- Version: 26.10.4
+- Public tag: v26.10.4
 - Publisher: _davstudios
 - Homepage: https://davstudios.it
 - License: MIT
 - Copyright: © 2026 _davstudios
-- Identifier preserved: studio.dav.space
+- Identifier: studio.dav.space
 - Category: Productivity
 - Linux DEB section: utils
 - Linux DEB priority: optional
 
-Release workflow:
-- Windows x64 NSIS
-- macOS Universal DMG
-- Linux x64 AppImage and DEB
-- GitHub Release body is read from the tagged commit Description
-- Both 🇮🇹 and 🇺🇸 sections are required
-- Linux apt workflow hardened against unavailable Microsoft repositories
-
-Functional comparison:
-- Frontend and Rust functional sources are preserved from the v26.10.2 baseline apart from repository-normalization whitespace at EOF.
-- Binary assets are preserved byte-for-byte.
-- Repository text files are intentionally normalized so Git associates them with the v26.10.3 release commit.
-- 55/55 pre-existing text files changed as part of the normalization; 7/7 pre-existing binary assets remain byte-for-byte identical.
-- Dedicated release metadata was added to `public` and `src-tauri/icons` so binary-only directories can be associated with the current release without altering artwork.
-- No functional differences were introduced by this repository-normalization update.
-
-Code signing:
-- No trusted commercial Windows code-signing certificate configured.
-- No Apple Developer ID/notarization configured.
-- README contains SmartScreen, Gatekeeper and AppImage guidance.
-
 Build validation:
-- Frontend dependency installation was attempted, but the sandbox package-download step timed out before Vite could be installed; JavaScript syntax and the full test suite were validated independently.
-- Cargo is not available in this execution environment, so the native Tauri/Rust bundle was not compiled here.
+- Cargo is not available in this execution environment.
+- node_modules is not included in the supplied source archive, so a native/local Tauri bundle was not claimed.
 - GitHub Actions remains responsible for native Windows, macOS and Linux release builds.
-

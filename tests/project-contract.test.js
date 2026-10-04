@@ -9,6 +9,9 @@ const launcher=fs.readFileSync('RUN-WINDOWS.bat','utf8');
 const vite=fs.readFileSync('vite.config.js','utf8');
 const scanner=fs.readFileSync('src-tauri/src/space.rs','utf8');
 const releaseWorkflow=fs.readFileSync('.github/workflows/release.yml','utf8');
+const main=fs.readFileSync('src/main.js','utf8');
+const motion=fs.readFileSync('src/motion.css','utf8');
+const entry=fs.readFileSync('src-tauri/src/main.rs','utf8');
 
 test('Windows launcher preserves the proven _davRENAME flow',()=>{
   assert.match(launcher,/npm install --no-audit --no-fund/i);
@@ -30,7 +33,7 @@ test('frontend and Tauri dependency versions match the proven base',()=>{
 
 test('release metadata and required files are coherent',()=>{
   const rustVersion=cargo.match(/^version\s*=\s*"([^"]+)"/m)?.[1];
-  assert.equal(packageJson.version,'26.10.3');
+  assert.equal(packageJson.version,'26.10.4');
   assert.equal(tauri.version,packageJson.version);
   assert.equal(rustVersion,packageJson.version);
   for(const path of ['README.md','CHANGELOG.md','src-tauri/icons/icon.ico'])assert.equal(fs.existsSync(path),true);
@@ -87,8 +90,8 @@ test('identifier storico resta invariato',()=>{
 
 test('package metadata e set icone documentano lo standard release',()=>{
   const metadata=fs.readFileSync('PACKAGE-METADATA.md','utf8');
-  assert.match(metadata,/Version: `26\.10\.3`/);
-  assert.match(metadata,/Public release tag: `v26\.10\.3`/);
+  assert.match(metadata,/Version: `26\.10\.4`/);
+  assert.match(metadata,/Public release tag: `v26\.10\.4`/);
   assert.match(metadata,/Developer \/ Publisher: `_davstudios`/);
   assert.match(metadata,/Identifier: `studio\.dav\.space`/);
   assert.match(metadata,/Category: `Productivity`/);
@@ -97,3 +100,43 @@ test('package metadata e set icone documentano lo standard release',()=>{
   }
 });
 
+
+
+test('motion system segue il sito _davstudios v52',()=>{
+  assert.match(motion,/--motion-duration-base:720ms/);
+  assert.match(motion,/--motion-duration-slow:940ms/);
+  assert.match(motion,/--motion-step:72ms/);
+  assert.match(motion,/--motion-page-out:170ms/);
+  assert.match(motion,/--motion-page-in:430ms/);
+  assert.match(motion,/cubic-bezier\(\.16,1,\.3,1\)/);
+  assert.match(motion,/dav-page-out/);
+  assert.match(motion,/dav-theme-reveal 680ms/);
+  assert.match(motion,/prefers-reduced-motion:reduce/);
+  assert.match(main,/navigatePage/);
+  assert.match(main,/is-page-leaving/);
+});
+
+test('Windows release usa GUI subsystem e nasconde Explorer helper',()=>{
+  assert.match(entry,/cfg_attr\(not\(debug_assertions\), windows_subsystem = "windows"\)/);
+  assert.match(scanner,/CommandExt/);
+  assert.match(scanner,/CREATE_NO_WINDOW/);
+  assert.match(scanner,/hidden_windows_command/);
+  assert.match(scanner,/hidden_windows_command\("explorer"\)/);
+});
+
+test('README stabile e indipendente dalla release corrente',()=>{
+  const readme=fs.readFileSync('README.md','utf8');
+  assert.match(readme,/Offrimi Un Caffè/);
+  assert.match(readme,/local-first/i);
+  assert.match(readme,/Windows GUI subsystem/);
+  assert.match(readme,/motion system coerente con il sito `_davstudios`/);
+  assert.doesNotMatch(readme,/Versione corrente:|Current version:|`v26\.10\.4`/);
+  for(const asset of ['website-it.svg','website-en.svg','buy-coffee-it.svg','buy-coffee-en.svg'])assert.equal(fs.existsSync(`.github/assets/${asset}`),true,`${asset} mancante`);
+});
+
+test('UI ordinaria non espone la versione e usa il supporto aggiornato',()=>{
+  assert.doesNotMatch(main,/getVersion|state\.version|class="version">v/);
+  assert.match(main,/MIT · Open source/);
+  assert.match(main,/Offrimi Un Caffè/);
+  assert.doesNotMatch(main,/Comprami Un Caffè/);
+});

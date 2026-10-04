@@ -1,6 +1,5 @@
 import './styles.css';
 import './motion.css';
-import { getVersion } from '@tauri-apps/api/app';
 import { invoke } from '@tauri-apps/api/core';
 import { listen } from '@tauri-apps/api/event';
 import { getCurrentWebview } from '@tauri-apps/api/webview';
@@ -28,7 +27,7 @@ const icons={
 const app=document.querySelector('#app');
 const isTauri='__TAURI_INTERNALS__' in window;
 const saved=JSON.parse(localStorage.getItem('davspace-settings')||'{}');
-const state={page:'overview',version:'—',root:'',busy:false,result:null,progress:{files:0,bytes:0,current:''},settings:{theme:saved.theme||'system',language:saved.language||'it',includeHidden:saved.includeHidden??false,exclusions:saved.exclusions||''},filters:{search:'',category:'all',minBytes:0,page:1},folderPage:1};
+const state={page:'overview',root:'',busy:false,result:null,progress:{files:0,bytes:0,current:''},settings:{theme:saved.theme||'system',language:saved.language||'it',includeHidden:saved.includeHidden??false,exclusions:saved.exclusions||''},filters:{search:'',category:'all',minBytes:0,page:1},folderPage:1};
 
 const t=(it,en)=>state.settings.language==='en'?en:it;
 const escapeHtml=(value)=>String(value??'').replace(/[&<>'"]/g,(char)=>({'&':'&amp;','<':'&lt;','>':'&gt;',"'":'&#39;','"':'&quot;'})[char]);
@@ -37,18 +36,73 @@ const basename=(path)=>String(path||'').split(/[\\/]/).filter(Boolean).at(-1)||S
 function persistSettings(){localStorage.setItem('davspace-settings',JSON.stringify(state.settings));}
 function resolvedTheme(){return state.settings.theme==='system'?(matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light'):state.settings.theme;}
 function applyTheme(){document.documentElement.dataset.theme=resolvedTheme();document.documentElement.lang=state.settings.language;}
-function runUiTransition(kind,change){document.documentElement.dataset.uiTransition=kind;if(document.startViewTransition){const transition=document.startViewTransition(change);transition.finished.finally(()=>delete document.documentElement.dataset.uiTransition);return;}document.documentElement.dataset.uiTransition=`${kind}-out`;setTimeout(()=>{change();document.documentElement.dataset.uiTransition=`${kind}-in`;setTimeout(()=>delete document.documentElement.dataset.uiTransition,430);},180);}
+let pageTransitionLocked=false;
+function themeTransitionGeometry(element){
+  if(!element)return null;
+  const rect=element.getBoundingClientRect();
+  const x=rect.left+rect.width/2;
+  const y=rect.top+rect.height/2;
+  return {x,y,radius:Math.hypot(Math.max(x,innerWidth-x),Math.max(y,innerHeight-y))};
+}
+function runUiTransition(kind,change,origin=null){
+  const root=document.documentElement;
+  const reduced=matchMedia('(prefers-reduced-motion: reduce)').matches;
+  if(reduced){change();return;}
+  if(kind==='theme'){
+    const geometry=themeTransitionGeometry(origin);
+    if(geometry&&typeof document.startViewTransition==='function'){
+      root.style.setProperty('--theme-transition-x',`${geometry.x}px`);
+      root.style.setProperty('--theme-transition-y',`${geometry.y}px`);
+      root.style.setProperty('--theme-transition-radius',`${geometry.radius}px`);
+      root.classList.add('theme-transitioning','theme-transition-capture');
+      const transition=document.startViewTransition(()=>change());
+      transition.ready.finally(()=>root.classList.remove('theme-transition-capture'));
+      transition.finished.finally(()=>root.classList.remove('theme-transitioning','theme-transition-capture'));
+      return;
+    }
+    root.classList.add('theme-transition-fallback');
+    change();
+    setTimeout(()=>root.classList.remove('theme-transition-fallback'),520);
+    return;
+  }
+  if(typeof document.startViewTransition==='function'){
+    root.dataset.uiTransition=kind;
+    const transition=document.startViewTransition(()=>change());
+    transition.finished.finally(()=>{if(root.dataset.uiTransition===kind)delete root.dataset.uiTransition;});
+    return;
+  }
+  root.dataset.uiTransition=`${kind}-out`;
+  setTimeout(()=>{
+    change();
+    root.dataset.uiTransition=`${kind}-in`;
+    setTimeout(()=>{if(root.dataset.uiTransition===`${kind}-in`)delete root.dataset.uiTransition;},430);
+  },170);
+}
+async function navigatePage(page){
+  if(pageTransitionLocked||page===state.page)return;
+  pageTransitionLocked=true;
+  try{
+    const reduced=matchMedia('(prefers-reduced-motion: reduce)').matches;
+    const main=document.querySelector('.main');
+    if(!reduced&&main){
+      main.classList.add('is-page-leaving');
+      await new Promise((resolve)=>setTimeout(resolve,170));
+    }
+    state.page=page;
+    render('page');
+  }finally{pageTransitionLocked=false;}
+}
 function navButton(page,icon,label){return `<button class="nav-item ${state.page===page?'active':''}" data-page="${page}">${icon}<span>${label}</span></button>`;}
 function shell(content,motion='page'){
   applyTheme();
-  app.innerHTML=`<div class="shell" data-motion-mode="${motion}"><aside class="sidebar"><div class="brand"><span>_dav</span>SPACE</div><nav>${navButton('overview',icons.overview,t('Panoramica','Overview'))}${navButton('files',icons.files,t('File più grandi','Largest files'))}${navButton('folders',icons.folders,t('Cartelle','Folders'))}${navButton('settings',icons.settings,t('Impostazioni','Settings'))}</nav><div class="sidebar-bottom"><button class="coffee-button" data-action="coffee">${icons.coffee}<span>${t('Comprami Un Caffè','Buy Me A Coffee')}</span></button><button class="icon-button theme-toggle" data-action="theme"><span class="theme-icon theme-icon-sun">${icons.sun}</span><span class="theme-icon theme-icon-moon">${icons.moon}</span></button></div></aside><main class="main">${content}</main></div><div id="toast-region"></div>`;
+  app.innerHTML=`<div class="shell" data-motion-mode="${motion}"><aside class="sidebar"><div class="brand"><span>_dav</span>SPACE</div><nav>${navButton('overview',icons.overview,t('Panoramica','Overview'))}${navButton('files',icons.files,t('File più grandi','Largest files'))}${navButton('folders',icons.folders,t('Cartelle','Folders'))}${navButton('settings',icons.settings,t('Impostazioni','Settings'))}</nav><div class="sidebar-bottom"><button class="coffee-button" data-action="coffee">${icons.coffee}<span>${t('Offrimi Un Caffè','Buy Me A Coffee')}</span></button><button class="icon-button theme-toggle" data-action="theme"><span class="theme-icon theme-icon-sun">${icons.sun}</span><span class="theme-icon theme-icon-moon">${icons.moon}</span></button></div></aside><main class="main">${content}</main></div><div id="toast-region"></div>`;
   bindGlobal();
 }
 function header(eyebrow,title,subtitle='',actions=''){return `<header class="topbar"><div class="topbar-copy"><div class="eyebrow">${eyebrow}</div><h1>${title}</h1>${subtitle?`<p>${subtitle}</p>`:''}</div><div class="top-actions">${actions}</div></header>`;}
 function scanActions(){if(state.busy)return `<button class="button danger" data-action="cancel-scan">${icons.stop}${t('Annulla scansione','Cancel scan')}</button>`;return `<button class="button primary" data-action="pick-root">${icons.scan}${state.result?t('Nuova scansione','New scan'):t('Scegli cartella','Choose folder')}</button>`;}
 function render(motion='page'){if(state.page==='files')return renderFiles(motion);if(state.page==='folders')return renderFolders(motion);if(state.page==='settings')return renderSettings(motion);return renderOverview(motion);}
 function renderOverview(motion='page'){
-  const top=header(`_davSPACE · v${escapeHtml(state.version)}`,t('Analisi spazio','Space analysis'),t('Individua file e cartelle che occupano più spazio, interamente in locale.','Find the files and folders using the most space, fully locally.'),scanActions());
+  const top=header('_davSPACE',t('Analisi spazio','Space analysis'),t('Individua file e cartelle che occupano più spazio, interamente in locale.','Find the files and folders using the most space, fully locally.'),scanActions());
   if(state.busy)return shell(`${top}<section class="workspace">${progressPanel()}</section>`,motion);
   if(!state.result){
     shell(`${top}<section class="workspace empty-wrap"><div class="drop-zone" data-drop-root><div class="drop-icon">${icons.drive}</div><h2>${t('Trova subito cosa occupa spazio','Find what is using your space')}</h2><p>${t('Seleziona una cartella, un disco o trascinalo qui. _davSPACE analizza file e sottocartelle localmente senza modificare nulla.','Choose a folder or drive, or drop it here. _davSPACE analyzes files and subfolders locally without changing anything.')}</p><div class="drop-actions"><button class="button primary" data-action="pick-root">${icons.scan}${t('Scegli cartella','Choose folder')}</button></div><div class="space-drop-note">${t('Nessun upload · nessuna eliminazione automatica · link simbolici ignorati','No uploads · no automatic deletion · symlinks ignored')}</div></div><div class="trust-row"><div><strong>${t('Tutto locale','Fully local')}</strong><span>${t('I nomi e i contenuti dei file non lasciano il computer.','File names and contents never leave your computer.')}</span></div><div><strong>${t('Scansione reale','Real scanning')}</strong><span>${t('Dimensioni lette direttamente dal file system.','Sizes are read directly from the file system.')}</span></div><div><strong>${t('Solo analisi','Analysis only')}</strong><span>${t('_davSPACE non elimina né sposta automaticamente i file.','_davSPACE never deletes or moves files automatically.')}</span></div></div></section>`,motion);
@@ -85,16 +139,16 @@ function renderFolders(motion='page'){
 }
 function davSelect(key,value,items){const selected=items.find(([v])=>v===value)?.[1]||value;return `<div class="dav-select" data-select="${key}"><button class="dav-select-trigger"><span>${selected}</span><span>⌄</span></button><div class="dav-select-menu">${items.map(([v,label])=>`<button class="dav-select-option ${v===value?'is-selected':''}" data-value="${v}"><span>${label}</span>${v===value?icons.check:''}</button>`).join('')}</div></div>`;}
 function renderSettings(motion='page'){
-  shell(`${header('_davSPACE',t('Impostazioni','Settings'),t('Preferenze locali per scansione, aspetto e lingua.','Local preferences for scanning, appearance, and language.'))}<section class="settings-grid"><div class="panel settings-card"><h2>${t('Generali','General')}</h2><div class="setting-row"><div class="setting-copy"><strong>${t('Includi elementi nascosti','Include hidden items')}</strong><span>${t('Include file e cartelle il cui nome inizia con un punto.','Includes files and folders whose name starts with a dot.')}</span></div><label class="switch"><input type="checkbox" data-setting-hidden ${state.settings.includeHidden?'checked':''}><span></span></label></div><div class="setting-control wide-control"><span>${t('Escludi cartelle','Exclude folders')}</span><input class="text-input" data-exclusions value="${escapeHtml(state.settings.exclusions)}" placeholder="node_modules, .git"></div><div class="setting-control"><span>${t('Tema','Theme')}</span>${davSelect('theme',state.settings.theme,[['system',t('Sistema','System')],['light',t('Chiaro','Light')],['dark',t('Scuro','Dark')]])}</div><div class="setting-control"><span>${t('Lingua','Language')}</span>${davSelect('language',state.settings.language,[['it','Italiano'],['en','English']])}</div></div><div class="panel about-card"><div class="brand big"><span>_dav</span>SPACE</div><p>${t('Analizzatore locale dello spazio su disco. Nessun account, pubblicità, upload o modifica automatica ai tuoi file.','Local disk space analyzer. No accounts, ads, uploads, or automatic changes to your files.')}</p><div class="about-links"><button class="website-button" data-action="website">${icons.globe}<span>davstudios.it</span></button><button class="coffee-button wide" data-action="coffee">${icons.coffee}<span>${t('Comprami Un Caffè','Buy Me A Coffee')}</span></button></div><div class="version">v${escapeHtml(state.version)} · ${t('Release stabile','Stable release')}</div></div><div class="panel capability-card scan-capabilities"><h2>${t('Motore di analisi','Analysis engine')}</h2><div class="capability-list"><div><strong>${t('Scansione ricorsiva','Recursive scanning')}</strong><span>${t('Analizza la cartella selezionata e tutte le sottocartelle accessibili.','Analyzes the selected folder and all accessible subfolders.')}</span></div><div><strong>${t('Nessun link simbolico','No symlink traversal')}</strong><span>${t('I link simbolici vengono ignorati per evitare percorsi ciclici o inattesi.','Symlinks are ignored to avoid cyclic or unexpected paths.')}</span></div><div><strong>${t('Risultati completi','Complete results')}</strong><span>${t('File e cartelle sono ordinati per dimensione, con filtri e paginazione.','Files and folders are sorted by size, with filters and pagination.')}</span></div></div></div></section>`,motion);
+  shell(`${header('_davSPACE',t('Impostazioni','Settings'),t('Preferenze locali per scansione, aspetto e lingua.','Local preferences for scanning, appearance, and language.'))}<section class="settings-grid"><div class="panel settings-card"><h2>${t('Generali','General')}</h2><div class="setting-row"><div class="setting-copy"><strong>${t('Includi elementi nascosti','Include hidden items')}</strong><span>${t('Include file e cartelle il cui nome inizia con un punto.','Includes files and folders whose name starts with a dot.')}</span></div><label class="switch"><input type="checkbox" data-setting-hidden ${state.settings.includeHidden?'checked':''}><span></span></label></div><div class="setting-control wide-control"><span>${t('Escludi cartelle','Exclude folders')}</span><input class="text-input" data-exclusions value="${escapeHtml(state.settings.exclusions)}" placeholder="node_modules, .git"></div><div class="setting-control"><span>${t('Tema','Theme')}</span>${davSelect('theme',state.settings.theme,[['system',t('Sistema','System')],['light',t('Chiaro','Light')],['dark',t('Scuro','Dark')]])}</div><div class="setting-control"><span>${t('Lingua','Language')}</span>${davSelect('language',state.settings.language,[['it','Italiano'],['en','English']])}</div></div><div class="panel about-card"><div class="brand big"><span>_dav</span>SPACE</div><p>${t('Analizzatore locale dello spazio su disco. Nessun account, pubblicità, upload o modifica automatica ai tuoi file.','Local disk space analyzer. No accounts, ads, uploads, or automatic changes to your files.')}</p><div class="about-links"><button class="website-button" data-action="website">${icons.globe}<span>davstudios.it</span></button><button class="coffee-button wide" data-action="coffee">${icons.coffee}<span>${t('Offrimi Un Caffè','Buy Me A Coffee')}</span></button></div><div class="version">MIT · Open source</div></div><div class="panel capability-card scan-capabilities"><h2>${t('Motore di analisi','Analysis engine')}</h2><div class="capability-list"><div><strong>${t('Scansione ricorsiva','Recursive scanning')}</strong><span>${t('Analizza la cartella selezionata e tutte le sottocartelle accessibili.','Analyzes the selected folder and all accessible subfolders.')}</span></div><div><strong>${t('Nessun link simbolico','No symlink traversal')}</strong><span>${t('I link simbolici vengono ignorati per evitare percorsi ciclici o inattesi.','Symlinks are ignored to avoid cyclic or unexpected paths.')}</span></div><div><strong>${t('Risultati completi','Complete results')}</strong><span>${t('File e cartelle sono ordinati per dimensione, con filtri e paginazione.','Files and folders are sorted by size, with filters and pagination.')}</span></div></div></div></section>`,motion);
   bindSettings();
 }
 function bindGlobal(){
-  document.querySelectorAll('[data-page]').forEach((node)=>node.addEventListener('click',()=>{state.page=node.dataset.page;render('page');}));
+  document.querySelectorAll('[data-page]').forEach((node)=>node.addEventListener('click',()=>navigatePage(node.dataset.page)));
   document.querySelectorAll('[data-action="pick-root"]').forEach((node)=>node.addEventListener('click',pickRoot));
   document.querySelectorAll('[data-action="cancel-scan"]').forEach((node)=>node.addEventListener('click',cancelScan));
   document.querySelectorAll('[data-action="coffee"]').forEach((node)=>node.addEventListener('click',()=>openExternal('https://buymeacoffee.com/davstudios')));
   document.querySelectorAll('[data-action="website"]').forEach((node)=>node.addEventListener('click',()=>openExternal(state.settings.language==='en'?'https://www.davstudios.it/en':'https://www.davstudios.it')));
-  document.querySelectorAll('[data-action="theme"]').forEach((node)=>node.addEventListener('click',()=>{const next=resolvedTheme()==='dark'?'light':'dark';runUiTransition('theme',()=>{state.settings.theme=next;persistSettings();render('content');});}));
+  document.querySelectorAll('[data-action="theme"]').forEach((node)=>node.addEventListener('click',(event)=>{const next=resolvedTheme()==='dark'?'light':'dark';runUiTransition('theme',()=>{state.settings.theme=next;persistSettings();render('content');},event.currentTarget);}));
   document.querySelectorAll('[data-reveal]').forEach((node)=>node.addEventListener('click',()=>reveal(node.dataset.reveal)));
   document.querySelector('[data-filter-search]')?.addEventListener('input',(event)=>{state.filters.search=event.target.value;state.filters.page=1;render('content');});
   document.querySelector('[data-filter-category]')?.addEventListener('change',(event)=>{state.filters.category=event.target.value;state.filters.page=1;render('content');});
@@ -108,7 +162,7 @@ function bindSettings(){
   document.querySelector('[data-setting-hidden]')?.addEventListener('change',(event)=>{state.settings.includeHidden=event.target.checked;persistSettings();});
   document.querySelector('[data-exclusions]')?.addEventListener('change',(event)=>{state.settings.exclusions=event.target.value;persistSettings();});
   document.querySelectorAll('.dav-select-trigger').forEach((node)=>node.addEventListener('click',(event)=>{event.stopPropagation();const root=node.closest('.dav-select');document.querySelectorAll('.dav-select.is-open').forEach((other)=>{if(other!==root)other.classList.remove('is-open');});root.classList.toggle('is-open');}));
-  document.querySelectorAll('.dav-select-option').forEach((node)=>node.addEventListener('click',()=>{const root=node.closest('.dav-select');const key=root.dataset.select;const value=node.dataset.value;runUiTransition(key==='theme'?'theme':'language',()=>{state.settings[key]=value;persistSettings();render('content');});}));
+  document.querySelectorAll('.dav-select-option').forEach((node)=>node.addEventListener('click',()=>{const root=node.closest('.dav-select');const key=root.dataset.select;const value=node.dataset.value;runUiTransition(key==='theme'?'theme':'language',()=>{state.settings[key]=value;persistSettings();render('content');},node);}));
 }
 async function pickRoot(){
   if(!isTauri){toast(t('Apri _davSPACE come app desktop per selezionare e analizzare una cartella.','Open _davSPACE as a desktop app to select and scan a folder.'));return;}
@@ -129,7 +183,6 @@ async function init(){
   applyTheme();
   document.addEventListener('click',()=>document.querySelectorAll('.dav-select.is-open').forEach((node)=>node.classList.remove('is-open')));
   if(isTauri){
-    try{state.version=await getVersion();}catch{}
     try{await listen('space-progress',(event)=>{state.progress=event.payload||state.progress;const files=document.querySelector('[data-progress-files]');const bytes=document.querySelector('[data-progress-bytes]');const current=document.querySelector('[data-progress-current]');if(files)files.textContent=state.progress.files.toLocaleString();if(bytes)bytes.textContent=formatBytes(state.progress.bytes);if(current)current.textContent=state.progress.current||state.root;});}catch{}
     try{await getCurrentWebview().onDragDropEvent((event)=>{const payload=event.payload;if(payload?.type==='enter')document.querySelector('[data-drop-root]')?.classList.add('drag-over');if(payload?.type==='leave')document.querySelector('[data-drop-root]')?.classList.remove('drag-over');if(payload?.type==='drop'){document.querySelector('[data-drop-root]')?.classList.remove('drag-over');const path=payload.paths?.[0];if(path)startScan(path);}});}catch{}
   }

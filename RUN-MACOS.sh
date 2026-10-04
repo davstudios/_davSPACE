@@ -7,3 +7,4 @@ command -v cargo >/dev/null
 if [ ! -d node_modules ]; then npm install --include=dev; fi
 npm run desktop
 
+

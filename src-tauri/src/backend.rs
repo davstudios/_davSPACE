@@ -23,3 +23,4 @@ pub fn run_action(action: String, paths: Vec<String>, _options: ActionOptions) -
     result(true,"Scan completed",&format!("{} files · {} folders · {} bytes",files,dirs,total),format!("CATEGORIES\n{}\n\nLARGEST FILES\n{}",cat_text,big_text))
 }
 
+

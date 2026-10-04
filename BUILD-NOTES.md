@@ -1,22 +1,19 @@
-# BUILD NOTES — _davSPACE v26.10.3
+# BUILD NOTES — _davSPACE v26.10.4
 
-La v26.10.3 mantiene il nuovo standard di release `_davstudios` e il versioning `YY.M.REVISIONE`, senza modifiche funzionali al motore di scansione o all'interfaccia. Questa revisione applica la repository normalization completa dei file testuali e mantiene la correzione `Cargo.lock` compatibile con checkout Windows CRLF introdotta nella v26.10.2.
+La v26.10.4 applica il final polish definitivo della suite `_davstudios` basato sul motion system del sito v52, mantenendo invariata la logica del motore di scansione. Le transizioni di pagina, il cambio tema, gli hover e i reveal sono stati riallineati alla stessa grammatica visiva del sito.
 
 La versione è sincronizzata tra `package.json`, `package-lock.json`, `src-tauri/tauri.conf.json`, `src-tauri/Cargo.toml` e la voce `_davSPACE` in `src-tauri/Cargo.lock`. I metadata ufficiali includono publisher `_davstudios`, homepage `https://davstudios.it`, copyright `© 2026 _davstudios`, licenza MIT, categoria Productivity e metadata Debian Linux. L'identifier storico `studio.dav.space` resta invariato.
 
-Windows richiede Node.js, npm, Rust e WebView2. macOS richiede Xcode Command Line Tools. Linux richiede le dipendenze Tauri indicate in `INSTALL-LINUX-DEPS-UBUNTU.sh`.
+La versione non viene più mostrata nell'interfaccia ordinaria. Il supporto italiano Buy Me A Coffee usa la dicitura `Offrimi Un Caffè`. Il README è stabile e indipendente dalla singola release.
 
-Il launcher Windows usa `npm install --no-audit --no-fund` quando le dipendenze Tauri non sono presenti. La configurazione Vite mantiene l'isolamento di `src-tauri` e legge `TAURI_DEV_HOST` nel formato previsto dai test multipiattaforma.
+Su Windows la build Release usa il GUI subsystem, evitando una finestra CMD separata. L'helper Explorer usato per mostrare la posizione di un file o una cartella usa `CREATE_NO_WINDOW`; le build debug mantengono il comportamento utile allo sviluppo.
 
 ## Release automatica
 
-`.github/workflows/release.yml` si attiva sui tag `v*`, verifica che tag, package npm, package-lock, Tauri, Cargo e Cargo.lock abbiano la stessa versione, richiede nel commit associato al tag una Description contenente entrambe le sezioni 🇮🇹 e 🇺🇸, esegue i test e pubblica una GitHub Release stabile usando automaticamente quella Description come corpo della release:
+`.github/workflows/release.yml` si attiva sui tag `v*`, verifica che tag, package npm, package-lock, Tauri, Cargo e Cargo.lock abbiano la stessa versione, richiede nel commit associato al tag una Description contenente entrambe le sezioni 🇮🇹 e 🇺🇸, esegue i test e pubblica una GitHub Release stabile usando automaticamente quella Description come corpo della release.
 
 - Windows: NSIS
 - macOS: Universal DMG
 - Linux: AppImage + DEB
 
 Il job Linux disabilita preventivamente eventuali repository Microsoft presenti sul runner Ubuntu che possono risultare non raggiungibili pur non essendo necessari alla build Tauri.
-
-L'icona principale Windows resta `src-tauri/icons/icon.ico`, con il set completo di icone Tauri preservato.
-

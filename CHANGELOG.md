@@ -1,5 +1,17 @@
 # Changelog
 
+## 26.10.4
+
+- Allineato il motion system al sito `_davstudios` v52 con durate, easing, reveal, stagger, transizioni di pagina e cambio tema radiale condivisi.
+- Aggiunte vere transizioni di uscita e ingresso tra Panoramica, File più grandi, Cartelle e Impostazioni.
+- Rimossa la versione dall'interfaccia ordinaria e aggiornata la dicitura italiana Buy Me A Coffee a `Offrimi Un Caffè`.
+- Normalizzato completamente il README con struttura bilingue stabile e indipendente dalla singola release.
+- Configurata la build Windows Release con `windows_subsystem = "windows"` e l'helper Explorer con `CREATE_NO_WINDOW` per evitare console aggiuntive.
+- Rafforzati i test automatici per motion v52, Windows GUI subsystem, helper nascosto, UI senza versione, README e compatibilità CRLF di `Cargo.lock`.
+- Sincronizzata la release `26.10.4` in package npm, package-lock, Tauri, Cargo, Cargo.lock, documentazione e test.
+- Eseguita una nuova repository normalization completa preservando pixel-per-pixel l'artwork delle icone.
+- Preservata integralmente la logica di scansione locale, sola lettura, filtri, categorie, paginazione e annullamento.
+
 ## 26.10.3
 
 - Eseguita la repository normalization completa dei file testuali con regole EOL/EOF deterministiche, così da riallinearli al commit della release corrente senza modifiche funzionali.

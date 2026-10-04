@@ -3,6 +3,8 @@ use std::collections::HashMap;
 use std::fs;
 use std::path::{Path,PathBuf};
 use std::process::Command;
+#[cfg(target_os="windows")]
+use std::os::windows::process::CommandExt;
 use std::sync::{Arc,atomic::{AtomicBool,Ordering}};
 use std::time::UNIX_EPOCH;
 use tauri::{AppHandle,Emitter,State};
@@ -34,6 +36,16 @@ pub struct ScanResult{pub root:String,pub total_bytes:u64,pub file_count:u64,pub
 #[derive(Clone,Serialize)]
 #[serde(rename_all="camelCase")]
 struct SpaceProgress{files:u64,bytes:u64,current:String}
+
+#[cfg(target_os="windows")]
+const CREATE_NO_WINDOW:u32=0x08000000;
+
+#[cfg(target_os="windows")]
+fn hidden_windows_command(program:&str)->Command{
+    let mut command=Command::new(program);
+    command.creation_flags(CREATE_NO_WINDOW);
+    command
+}
 
 fn hidden_name(path:&Path)->bool{path.file_name().and_then(|name|name.to_str()).map(|name|name.starts_with('.')).unwrap_or(false)}
 
@@ -128,7 +140,7 @@ pub fn reveal_path(path:String)->Result<(),String>{
     let target=PathBuf::from(&path);
     if !target.exists(){return Err("Il percorso non esiste più.".into());}
     #[cfg(target_os="windows")]
-    let status=Command::new("explorer").arg(format!("/select,{}",target.to_string_lossy())).status();
+    let status=hidden_windows_command("explorer").arg(format!("/select,{}",target.to_string_lossy())).status();
     #[cfg(target_os="macos")]
     let status=Command::new("open").arg("-R").arg(&target).status();
     #[cfg(all(unix,not(target_os="macos")))]

@@ -664,7 +664,7 @@ dependencies = [
 
 [[package]]
 name = "davspace"
-version = "26.10.3"
+version = "26.10.4"
 dependencies = [
  "serde",
  "serde_json",

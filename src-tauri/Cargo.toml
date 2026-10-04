@@ -1,6 +1,6 @@
 [package]
 name = "davspace"
-version = "26.10.3"
+version = "26.10.4"
 description = "_davSPACE — local disk space analyzer by _davstudios."
 authors = ["_davstudios"]
 license = "MIT"
